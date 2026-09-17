@@ -32,6 +32,18 @@ const registerUser = async (req, res) => {
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 const loginUser = async (req, res) => {
+  const getMe = async (req, res) => {
+  try {
+    const user = {
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    };
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
   try {
     const { email, password } = req.body;
 
@@ -52,4 +64,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+mmodule.exports = { registerUser, loginUser, getMe };
