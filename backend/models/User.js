@@ -15,9 +15,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   }
-}, { timestamps: true }); // ithu automatically createdAt time-ah save pannidum
+}, { timestamps: true });
 
-// Password-ah DB-la save pandrathukku munnadi Hash (encrypt) pandrathu
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -26,7 +25,7 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Login pannumpothu user type pandra password-um, DB-la irukka hash-um match aagutha nu check panna
+
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
