@@ -3,6 +3,7 @@ const generateToken = require('../utils/generateToken');
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
+// @access  Public
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -31,19 +32,8 @@ const registerUser = async (req, res) => {
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
+// @access  Public
 const loginUser = async (req, res) => {
-  const getMe = async (req, res) => {
-  try {
-    const user = {
-      _id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-    };
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
   try {
     const { email, password } = req.body;
 
@@ -64,4 +54,21 @@ const loginUser = async (req, res) => {
   }
 };
 
-mmodule.exports = { registerUser, loginUser, getMe };
+// @desc    Get current logged in user
+// @route   GET /api/auth/me
+// @access  Private
+const getMe = async (req, res) => {
+  try {
+    // req.user comes from the protect middleware
+    const user = {
+      _id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+    };
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getMe };
