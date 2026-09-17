@@ -1,0 +1,168 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Default values for the What-If Simulator
+  const [formData, setFormData] = useState({
+    sleep_hours: 7,
+    work_hours: 8,
+    screen_time: 4,
+    exercise_minutes: 30,
+    break_minutes: 60,
+    meetings: 2,
+    social_media_minutes: 45,
+    mood_score: 8,
+    previous_productivity: 75
+  });
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: Number(e.target.value) });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const handlePredict = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      const token = localStorage.getItem('token');
+      // Sending data to Node.js which in turn calls Python FastAPI
+      const response = await axios.post('http://localhost:5000/api/predictions', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setResult(response.data);
+    } catch (err) {
+      setError('Failed to fetch prediction. Is the ML service running?');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Form input configurations for clean rendering
+  const inputFields = [
+    { label: 'Sleep Hours', name: 'sleep_hours', step: '0.5' },
+    { label: 'Work Hours', name: 'work_hours', step: '0.5' },
+    { label: 'Screen Time (hrs)', name: 'screen_time', step: '0.5' },
+    { label: 'Exercise (mins)', name: 'exercise_minutes', step: '5' },
+    { label: 'Break (mins)', name: 'break_minutes', step: '5' },
+    { label: 'Meetings Count', name: 'meetings', step: '1' },
+    { label: 'Social Media (mins)', name: 'social_media_minutes', step: '5' },
+    { label: 'Mood Score (1-10)', name: 'mood_score', step: '1' },
+    { label: 'Previous Productivity', name: 'previous_productivity', step: '1' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-blue-500">LifeFlow Dashboard</h1>
+        <button 
+          onClick={handleLogout}
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition"
+        >
+          Logout
+        </button>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Column: What-If Simulator Form */}
+        <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 text-gray-200">🤖 What-If Simulator</h2>
+          <p className="text-sm text-gray-400 mb-6">Tweak your daily metrics to see how it affects your predicted productivity.</p>
+          
+          <form onSubmit={handlePredict} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {inputFields.map((field) => (
+              <div key={field.name}>
+                <label className="block text-xs font-medium text-gray-400 mb-1">{field.label}</label>
+                <input
+                  type="number"
+                  name={field.name}
+                  step={field.step}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white focus:border-blue-500 focus:outline-none"
+                  required
+                />
+              </div>
+            ))}
+            
+            <div className="md:col-span-2 lg:col-span-3 mt-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition disabled:opacity-50"
+              >
+                {loading ? 'Running ML Models...' : 'Predict My Day'}
+              </button>
+            </div>
+          </form>
+          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
+        </div>
+
+        {/* Right Column: Prediction Results */}
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-center">
+          <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">Prediction Results</h2>
+          
+          {!result ? (
+            <div className="text-center text-gray-500 py-10">
+              Run the simulator to see your results here.
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Productivity Score */}
+              <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-blue-500">
+                <p className="text-sm text-gray-400">Predicted Productivity</p>
+                <p className="text-4xl font-bold text-blue-400 mt-1">{result.predicted_productivity}</p>
+              </div>
+
+              {/* Task Completion */}
+              <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-green-500">
+                <p className="text-sm text-gray-400">Task Completion Probability</p>
+                <p className="text-4xl font-bold text-green-400 mt-1">{result.task_completion_probability}%</p>
+              </div>
+
+              {/* Disruption Risk */}
+              <div className={`bg-gray-700 p-4 rounded text-center border-l-4 ${
+                result.disruption_risk === 'HIGH' ? 'border-red-500' : 
+                result.disruption_risk === 'MEDIUM' ? 'border-yellow-500' : 'border-green-500'
+              }`}>
+                <p className="text-sm text-gray-400">Routine Disruption Risk</p>
+                <p className={`text-3xl font-bold mt-1 ${
+                  result.disruption_risk === 'HIGH' ? 'text-red-400' : 
+                  result.disruption_risk === 'MEDIUM' ? 'text-yellow-400' : 'text-green-400'
+                }`}>
+                  {result.disruption_risk}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
