@@ -6,6 +6,7 @@ import LogHistory from '../components/LogHistory';
 import StatCards from '../components/StatCards';
 import AnalyticsCharts from '../components/AnalyticsCharts';
 import GamificationPanel from '../components/GamificationPanel';
+import AiInsights from '../components/AiInsights';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -385,6 +386,9 @@ const Dashboard = () => {
               <>
                 {/* 3 Summary Cards */}
                 <StatCards logs={logs} />
+
+                {/* AI Insights & Recommendations */}
+                <AiInsights logs={logs} />
 
                 {/* 2 Responsive Recharts */}
                 <AnalyticsCharts logs={logs} />

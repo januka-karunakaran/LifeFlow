@@ -103,6 +103,67 @@ const LogHistory = ({ onNavigateToLog }) => {
     }
   };
 
+  // Export logs to CSV utility
+  const exportToCsv = () => {
+    if (!logs || logs.length === 0) return;
+
+    // Define CSV Headers
+    const headers = [
+      'Date',
+      'Sleep Hours',
+      'Work Hours',
+      'Screen Time (hrs)',
+      'Exercise (mins)',
+      'Break (mins)',
+      'Meetings Count',
+      'Social Media (mins)',
+      'Mood Score (1-10)',
+      'Productivity Score (%)',
+      'Previous Productivity (%)',
+    ];
+
+    // Format data rows
+    const rows = logs.map((log) => [
+      log.date || '',
+      log.sleepHours ?? log.sleep_hours ?? 0,
+      log.workHours ?? log.work_hours ?? 0,
+      log.screenTime ?? log.screen_time ?? 0,
+      log.exerciseMinutes ?? log.exercise_minutes ?? 0,
+      log.breakMinutes ?? log.break_minutes ?? 0,
+      log.meetings ?? 0,
+      log.socialMediaMinutes ?? log.social_media_minutes ?? 0,
+      log.moodScore ?? log.mood_score ?? 0,
+      log.productivityScore ?? log.productivity_score ?? 0,
+      log.previousProductivity ?? log.previous_productivity ?? 0,
+    ]);
+
+    // Construct CSV String with proper escaping
+    const csvContent = [
+      headers.join(','),
+      ...rows.map((row) =>
+        row
+          .map((value) => {
+            const str = String(value);
+            return str.includes(',') || str.includes('"') || str.includes('\n')
+              ? `"${str.replace(/"/g, '""')}"`
+              : str;
+          })
+          .join(',')
+      ),
+    ].join('\r\n');
+
+    // Create a Blob and trigger standard browser download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'lifeflow_export.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Compute quick summary metrics
   const totalEntries = logs.length;
   const avgSleep = totalEntries
@@ -117,7 +178,7 @@ const LogHistory = ({ onNavigateToLog }) => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Top Header & Refresh */}
+      {/* Top Header & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-5 rounded-lg border border-gray-700 shadow-lg">
         <div>
           <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
@@ -128,21 +189,33 @@ const LogHistory = ({ onNavigateToLog }) => {
           </p>
         </div>
 
-        <button
-          onClick={handleRefresh}
-          disabled={loading}
-          className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded text-sm font-medium transition border border-gray-600 flex items-center gap-2 disabled:opacity-50"
-        >
-          <svg
-            className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="flex items-center gap-3">
+          <button
+            onClick={exportToCsv}
+            disabled={loading || logs.length === 0}
+            className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-4 py-2 rounded text-sm font-medium transition flex items-center gap-2 shadow"
+            title="Download logs as CSV"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          <span>Refresh</span>
-        </button>
+            <span>📥</span>
+            <span>Download CSV</span>
+          </button>
+
+          <button
+            onClick={handleRefresh}
+            disabled={loading}
+            className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded text-sm font-medium transition border border-gray-600 flex items-center gap-2 disabled:opacity-50"
+          >
+            <svg
+              className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Refresh</span>
+          </button>
+        </div>
       </div>
 
       {/* Action Notice / Banner */}
