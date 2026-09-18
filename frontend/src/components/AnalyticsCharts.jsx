@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
+import { motion } from 'framer-motion';
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -65,7 +66,12 @@ const AnalyticsCharts = ({ logs = [] }) => {
     });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+    >
       {/* Chart 1: Productivity Trend Line Chart */}
       <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
         <div className="mb-6">
@@ -168,7 +174,7 @@ const AnalyticsCharts = ({ logs = [] }) => {
           </ResponsiveContainer>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

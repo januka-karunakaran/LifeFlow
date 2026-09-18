@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const LogHistory = ({ onNavigateToLog }) => {
   const [logs, setLogs] = useState([]);
@@ -177,7 +178,12 @@ const LogHistory = ({ onNavigateToLog }) => {
     : 0;
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="space-y-6 max-w-6xl mx-auto"
+    >
       {/* Top Header & Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-5 rounded-lg border border-gray-700 shadow-lg">
         <div>
@@ -438,7 +444,7 @@ const LogHistory = ({ onNavigateToLog }) => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const DailyLogForm = ({ onLogAdded }) => {
   const getTodayDateString = () => new Date().toISOString().split('T')[0];
@@ -114,7 +115,12 @@ const DailyLogForm = ({ onLogAdded }) => {
   ];
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 max-w-4xl mx-auto"
+    >
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
@@ -203,7 +209,7 @@ const DailyLogForm = ({ onLogAdded }) => {
           </button>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
