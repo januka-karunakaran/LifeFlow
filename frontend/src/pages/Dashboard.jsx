@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import DailyLogForm from '../components/DailyLogForm';
+import LogHistory from '../components/LogHistory';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator' | 'log' | 'history'
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -18,7 +21,7 @@ const Dashboard = () => {
     meetings: 2,
     social_media_minutes: 45,
     mood_score: 8,
-    previous_productivity: 75
+    previous_productivity: 75,
   });
 
   // Check if user is logged in
@@ -42,18 +45,18 @@ const Dashboard = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       const token = localStorage.getItem('token');
       // Sending data to Node.js which in turn calls Python FastAPI
       const response = await axios.post('http://localhost:5000/api/predictions', formData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       setResult(response.data);
     } catch (err) {
-      setError('Failed to fetch prediction. Is the ML service running?');
+      setError(err.response?.data?.message || 'Failed to fetch prediction. Is the ML service running?');
     } finally {
       setLoading(false);
     }
@@ -75,91 +78,160 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-6 max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-blue-500">LifeFlow Dashboard</h1>
-        <button 
+        <button
           onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition"
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition shadow"
         >
           Logout
         </button>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Left Column: What-If Simulator Form */}
-        <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
-          <h2 className="text-xl font-semibold mb-4 text-gray-200">🤖 What-If Simulator</h2>
-          <p className="text-sm text-gray-400 mb-6">Tweak your daily metrics to see how it affects your predicted productivity.</p>
-          
-          <form onSubmit={handlePredict} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {inputFields.map((field) => (
-              <div key={field.name}>
-                <label className="block text-xs font-medium text-gray-400 mb-1">{field.label}</label>
-                <input
-                  type="number"
-                  name={field.name}
-                  step={field.step}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white focus:border-blue-500 focus:outline-none"
-                  required
-                />
-              </div>
-            ))}
-            
-            <div className="md:col-span-2 lg:col-span-3 mt-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition disabled:opacity-50"
-              >
-                {loading ? 'Running ML Models...' : 'Predict My Day'}
-              </button>
-            </div>
-          </form>
-          {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
+      {/* Navigation Tabs */}
+      <div className="max-w-6xl mx-auto mb-8">
+        <div className="flex flex-wrap gap-2 p-1.5 bg-gray-800 rounded-xl border border-gray-700 shadow-md">
+          <button
+            onClick={() => setActiveTab('simulator')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+              activeTab === 'simulator'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+            }`}
+          >
+            <span>🤖</span>
+            <span>What-If Simulator</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('log')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+              activeTab === 'log'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+            }`}
+          >
+            <span>📝</span>
+            <span>Log Today's Data</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+              activeTab === 'history'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+            }`}
+          >
+            <span>📊</span>
+            <span>My History</span>
+          </button>
         </div>
+      </div>
 
-        {/* Right Column: Prediction Results */}
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-center">
-          <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">Prediction Results</h2>
-          
-          {!result ? (
-            <div className="text-center text-gray-500 py-10">
-              Run the simulator to see your results here.
+      {/* Main Tab Content */}
+      <div className="max-w-6xl mx-auto">
+        {/* Tab 1: What-If Simulator */}
+        {activeTab === 'simulator' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column: What-If Simulator Form */}
+            <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+              <h2 className="text-xl font-semibold mb-4 text-gray-200">🤖 What-If Simulator</h2>
+              <p className="text-sm text-gray-400 mb-6">
+                Tweak your daily metrics to see how it affects your predicted productivity.
+              </p>
+
+              <form onSubmit={handlePredict} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {inputFields.map((field) => (
+                  <div key={field.name}>
+                    <label className="block text-xs font-medium text-gray-400 mb-1">{field.label}</label>
+                    <input
+                      type="number"
+                      name={field.name}
+                      step={field.step}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white focus:border-blue-500 focus:outline-none transition"
+                      required
+                    />
+                  </div>
+                ))}
+
+                <div className="md:col-span-2 lg:col-span-3 mt-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition disabled:opacity-50"
+                  >
+                    {loading ? 'Running ML Models...' : 'Predict My Day'}
+                  </button>
+                </div>
+              </form>
+              {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
             </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Productivity Score */}
-              <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-blue-500">
-                <p className="text-sm text-gray-400">Predicted Productivity</p>
-                <p className="text-4xl font-bold text-blue-400 mt-1">{result.predicted_productivity}</p>
-              </div>
 
-              {/* Task Completion */}
-              <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-green-500">
-                <p className="text-sm text-gray-400">Task Completion Probability</p>
-                <p className="text-4xl font-bold text-green-400 mt-1">{result.task_completion_probability}%</p>
-              </div>
+            {/* Right Column: Prediction Results */}
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-center">
+              <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">Prediction Results</h2>
 
-              {/* Disruption Risk */}
-              <div className={`bg-gray-700 p-4 rounded text-center border-l-4 ${
-                result.disruption_risk === 'HIGH' ? 'border-red-500' : 
-                result.disruption_risk === 'MEDIUM' ? 'border-yellow-500' : 'border-green-500'
-              }`}>
-                <p className="text-sm text-gray-400">Routine Disruption Risk</p>
-                <p className={`text-3xl font-bold mt-1 ${
-                  result.disruption_risk === 'HIGH' ? 'text-red-400' : 
-                  result.disruption_risk === 'MEDIUM' ? 'text-yellow-400' : 'text-green-400'
-                }`}>
-                  {result.disruption_risk}
-                </p>
-              </div>
+              {!result ? (
+                <div className="text-center text-gray-500 py-10">
+                  Run the simulator to see your results here.
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Productivity Score */}
+                  <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-blue-500">
+                    <p className="text-sm text-gray-400">Predicted Productivity</p>
+                    <p className="text-4xl font-bold text-blue-400 mt-1">{result.predicted_productivity}</p>
+                  </div>
+
+                  {/* Task Completion */}
+                  <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-green-500">
+                    <p className="text-sm text-gray-400">Task Completion Probability</p>
+                    <p className="text-4xl font-bold text-green-400 mt-1">
+                      {result.task_completion_probability}%
+                    </p>
+                  </div>
+
+                  {/* Disruption Risk */}
+                  <div
+                    className={`bg-gray-700 p-4 rounded text-center border-l-4 ${
+                      result.disruption_risk === 'HIGH'
+                        ? 'border-red-500'
+                        : result.disruption_risk === 'MEDIUM'
+                        ? 'border-yellow-500'
+                        : 'border-green-500'
+                    }`}
+                  >
+                    <p className="text-sm text-gray-400">Routine Disruption Risk</p>
+                    <p
+                      className={`text-3xl font-bold mt-1 ${
+                        result.disruption_risk === 'HIGH'
+                          ? 'text-red-400'
+                          : result.disruption_risk === 'MEDIUM'
+                          ? 'text-yellow-400'
+                          : 'text-green-400'
+                      }`}
+                    >
+                      {result.disruption_risk}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
+        {/* Tab 2: Daily Log Form */}
+        {activeTab === 'log' && (
+          <DailyLogForm onLogAdded={() => setActiveTab('history')} />
+        )}
+
+        {/* Tab 3: Log History */}
+        {activeTab === 'history' && (
+          <LogHistory onNavigateToLog={() => setActiveTab('log')} />
+        )}
       </div>
     </div>
   );
