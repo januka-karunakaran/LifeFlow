@@ -5,6 +5,7 @@ import DailyLogForm from '../components/DailyLogForm';
 import LogHistory from '../components/LogHistory';
 import StatCards from '../components/StatCards';
 import AnalyticsCharts from '../components/AnalyticsCharts';
+import GamificationPanel from '../components/GamificationPanel';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -152,6 +153,9 @@ const Dashboard = () => {
           Logout
         </button>
       </div>
+
+      {/* Gamification Panel (Streak & Achievements) */}
+      <GamificationPanel logs={logs} />
 
       {/* Navigation Tabs */}
       <div className="max-w-6xl mx-auto mb-8">
