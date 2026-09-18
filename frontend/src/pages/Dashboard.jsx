@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import DailyLogForm from '../components/DailyLogForm';
 import LogHistory from '../components/LogHistory';
+import StatCards from '../components/StatCards';
+import AnalyticsCharts from '../components/AnalyticsCharts';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator' | 'log' | 'history'
+  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator' | 'log' | 'history' | 'analytics'
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Logs state shared with Analytics and History
+  const [logs, setLogs] = useState([]);
+  const [logsLoading, setLogsLoading] = useState(false);
+  const [logsError, setLogsError] = useState('');
 
   // Default values for the What-If Simulator
   const [formData, setFormData] = useState({
@@ -31,6 +38,59 @@ const Dashboard = () => {
       navigate('/login');
     }
   }, [navigate]);
+
+  // Manual / event-based logs fetcher
+  const fetchLogs = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    setLogsLoading(true);
+    setLogsError('');
+
+    try {
+      const response = await axios.get('http://localhost:5000/api/logs', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLogs(Array.isArray(response.data) ? response.data : []);
+    } catch (err) {
+      setLogsError(err.response?.data?.message || 'Failed to fetch logs data.');
+    } finally {
+      setLogsLoading(false);
+    }
+  }, []);
+
+  // Fetch logs on initial mount
+  useEffect(() => {
+    let ignore = false;
+
+    const loadInitialLogs = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const response = await axios.get('http://localhost:5000/api/logs', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!ignore) {
+          setLogs(Array.isArray(response.data) ? response.data : []);
+        }
+      } catch (err) {
+        if (!ignore) {
+          setLogsError(err.response?.data?.message || 'Failed to fetch logs data.');
+        }
+      }
+    };
+
+    loadInitialLogs();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: Number(e.target.value) });
@@ -60,6 +120,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogAdded = () => {
+    fetchLogs();
+    setActiveTab('history');
   };
 
   // Form input configurations for clean rendering
@@ -125,6 +190,21 @@ const Dashboard = () => {
           >
             <span>📊</span>
             <span>My History</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('analytics');
+              fetchLogs();
+            }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+              activeTab === 'analytics'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+            }`}
+          >
+            <span>📈</span>
+            <span>Analytics</span>
           </button>
         </div>
       </div>
@@ -225,12 +305,88 @@ const Dashboard = () => {
 
         {/* Tab 2: Daily Log Form */}
         {activeTab === 'log' && (
-          <DailyLogForm onLogAdded={() => setActiveTab('history')} />
+          <DailyLogForm onLogAdded={handleLogAdded} />
         )}
 
         {/* Tab 3: Log History */}
         {activeTab === 'history' && (
           <LogHistory onNavigateToLog={() => setActiveTab('log')} />
+        )}
+
+        {/* Tab 4: Analytics */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-6">
+            {/* Header & Refresh */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-5 rounded-lg border border-gray-700 shadow-lg">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
+                  <span>📈</span> Analytics & Insights
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Visualize your historical productivity trends and monitor lifestyle metrics.
+                </p>
+              </div>
+
+              <button
+                onClick={fetchLogs}
+                disabled={logsLoading}
+                className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded text-sm font-medium transition border border-gray-600 flex items-center gap-2 disabled:opacity-50"
+              >
+                <svg
+                  className={`w-4 h-4 ${logsLoading ? 'animate-spin' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+                <span>Refresh Data</span>
+              </button>
+            </div>
+
+            {/* Error Message */}
+            {logsError && (
+              <div className="bg-red-900/30 border border-red-500/60 p-4 rounded-lg text-sm text-red-300 flex items-center justify-between">
+                <span>{logsError}</span>
+                <button
+                  onClick={fetchLogs}
+                  className="bg-red-800 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {/* Loading Indicator */}
+            {logsLoading && logs.length === 0 ? (
+              <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center shadow-lg">
+                <div className="inline-flex items-center justify-center p-4 bg-gray-750 rounded-full mb-4">
+                  <svg className="animate-spin h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-300 font-medium">Loading analytics...</p>
+              </div>
+            ) : (
+              <>
+                {/* 3 Summary Cards */}
+                <StatCards logs={logs} />
+
+                {/* 2 Responsive Recharts */}
+                <AnalyticsCharts logs={logs} />
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>
