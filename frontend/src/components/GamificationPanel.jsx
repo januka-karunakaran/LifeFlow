@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 const GamificationPanel = ({ logs = [] }) => {
   // Utility function to format Date object into YYYY-MM-DD
   const formatDateString = (dateObj) => {
@@ -94,7 +96,12 @@ const GamificationPanel = ({ logs = [] }) => {
   const unlockedCount = badges.filter((b) => b.isUnlocked).length;
 
   return (
-    <div className="bg-gray-800 rounded-xl border border-gray-700 p-5 shadow-lg mb-8 max-w-6xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-gray-800 rounded-xl border border-gray-700 p-5 shadow-lg mb-8 max-w-6xl mx-auto"
+    >
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left Section: Streak Counter */}
         <div className="flex items-center gap-4">
@@ -154,7 +161,7 @@ const GamificationPanel = ({ logs = [] }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

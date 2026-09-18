@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 const StatCards = ({ logs = [] }) => {
   const totalLogs = logs.length;
 
@@ -23,7 +25,12 @@ const StatCards = ({ logs = [] }) => {
     : 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+    >
       {/* Card 1: Average Productivity */}
       <div className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg hover:border-blue-500/50 transition duration-200">
         <div className="flex items-center justify-between mb-4">
@@ -91,7 +98,7 @@ const StatCards = ({ logs = [] }) => {
             : 'No logs recorded yet'}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
