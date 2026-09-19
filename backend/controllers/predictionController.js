@@ -5,8 +5,9 @@ const axios = require('axios');
 // @access  Private
 const getPrediction = async (req, res) => {
   try {
-    // Python FastAPI URL (Port 8000)
-    const mlServiceUrl = 'http://127.0.0.1:8000/predict';
+    // Python FastAPI URL (Port 8000 locally, or deployed URL)
+    const mlBaseUrl = process.env.ML_SERVICE_URL || 'http://127.0.0.1:8000';
+    const mlServiceUrl = `${mlBaseUrl.replace(/\/$/, '')}/predict`;
 
     const payload = {
       sleep_hours: req.body.sleep_hours ?? req.body.sleepHours ?? 7,
