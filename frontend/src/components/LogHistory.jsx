@@ -227,12 +227,12 @@ const LogHistory = ({ onNavigateToLog }) => {
       className="space-y-6 max-w-6xl mx-auto"
     >
       {/* Top Header & Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-5 rounded-lg border border-gray-700 shadow-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
         <div>
-          <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
             <span>📊</span> My Daily Log History
           </h2>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             Review your tracked lifestyle metrics and monitor your progress over time.
           </p>
         </div>
@@ -241,7 +241,7 @@ const LogHistory = ({ onNavigateToLog }) => {
           <button
             onClick={exportToCsv}
             disabled={loading || logs.length === 0}
-            className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-4 py-2 rounded text-sm font-medium transition flex items-center gap-2 shadow"
+            className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-sm"
             title="Download current logs as CSV"
           >
             <span>📥</span>
@@ -251,7 +251,7 @@ const LogHistory = ({ onNavigateToLog }) => {
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded text-sm font-medium transition border border-gray-600 flex items-center gap-2 disabled:opacity-50"
+            className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition border border-gray-300 flex items-center gap-2 disabled:opacity-50 shadow-sm"
           >
             <svg
               className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
@@ -272,18 +272,18 @@ const LogHistory = ({ onNavigateToLog }) => {
       </div>
 
       {/* Date Range Filter Bar */}
-      <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-lg">
+      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
+              <span className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
                 <span>📅</span> Filter Date Range:
               </span>
             </div>
 
             {/* Start Date */}
             <div className="flex items-center gap-2">
-              <label htmlFor="startDate" className="text-xs text-gray-400 font-medium whitespace-nowrap">
+              <label htmlFor="startDate" className="text-xs text-gray-500 font-medium whitespace-nowrap">
                 From:
               </label>
               <input
@@ -291,13 +291,13 @@ const LogHistory = ({ onNavigateToLog }) => {
                 type="date"
                 value={startDate}
                 onChange={handleStartDateChange}
-                className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg px-3 py-1.5 focus:border-blue-500 focus:outline-none transition"
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg px-3 py-1.5 focus:border-purple-500 focus:outline-none transition shadow-sm"
               />
             </div>
 
             {/* End Date */}
             <div className="flex items-center gap-2">
-              <label htmlFor="endDate" className="text-xs text-gray-400 font-medium whitespace-nowrap">
+              <label htmlFor="endDate" className="text-xs text-gray-500 font-medium whitespace-nowrap">
                 To:
               </label>
               <input
@@ -305,7 +305,7 @@ const LogHistory = ({ onNavigateToLog }) => {
                 type="date"
                 value={endDate}
                 onChange={handleEndDateChange}
-                className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg px-3 py-1.5 focus:border-blue-500 focus:outline-none transition"
+                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg px-3 py-1.5 focus:border-purple-500 focus:outline-none transition shadow-sm"
               />
             </div>
 
@@ -313,7 +313,7 @@ const LogHistory = ({ onNavigateToLog }) => {
             {isFiltered && (
               <button
                 onClick={handleClearFilters}
-                className="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-600 transition flex items-center gap-1"
+                className="bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-300 transition flex items-center gap-1 shadow-sm"
                 title="Clear date filters"
               >
                 <span>✕</span>
@@ -324,14 +324,14 @@ const LogHistory = ({ onNavigateToLog }) => {
 
           {/* Per Page Selector */}
           <div className="flex items-center gap-2 self-end md:self-auto">
-            <label htmlFor="limitSelector" className="text-xs text-gray-400 font-medium whitespace-nowrap">
+            <label htmlFor="limitSelector" className="text-xs text-gray-500 font-medium whitespace-nowrap">
               Show:
             </label>
             <select
               id="limitSelector"
               value={limit}
               onChange={handleLimitChange}
-              className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg px-2.5 py-1.5 focus:border-blue-500 focus:outline-none transition"
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg px-2.5 py-1.5 focus:border-purple-500 focus:outline-none transition shadow-sm"
             >
               <option value={5}>5 per page</option>
               <option value={10}>10 per page</option>
@@ -345,36 +345,36 @@ const LogHistory = ({ onNavigateToLog }) => {
       {/* Overview Stat Cards */}
       {!loading && !error && totalLogs > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">
               {isFiltered ? 'Matching Logs' : 'Total Logs'}
             </p>
-            <p className="text-2xl font-bold text-blue-400 mt-1">{totalLogs}</p>
+            <p className="text-2xl font-bold text-purple-600 mt-1">{totalLogs}</p>
           </div>
-          <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Page Avg Sleep</p>
-            <p className="text-2xl font-bold text-indigo-400 mt-1">
-              {avgSleep} <span className="text-xs text-gray-400 font-normal">hrs</span>
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Page Avg Sleep</p>
+            <p className="text-2xl font-bold text-blue-600 mt-1">
+              {avgSleep} <span className="text-xs text-gray-500 font-normal">hrs</span>
             </p>
           </div>
-          <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Page Avg Mood</p>
-            <p className="text-2xl font-bold text-emerald-400 mt-1">
-              {avgMood} <span className="text-xs text-gray-400 font-normal">/ 10</span>
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Page Avg Mood</p>
+            <p className="text-2xl font-bold text-emerald-600 mt-1">
+              {avgMood} <span className="text-xs text-gray-500 font-normal">/ 10</span>
             </p>
           </div>
-          <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wide">Page Avg Prod.</p>
-            <p className="text-2xl font-bold text-teal-400 mt-1">{avgProductivity}%</p>
+          <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm text-center">
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Page Avg Prod.</p>
+            <p className="text-2xl font-bold text-indigo-600 mt-1">{avgProductivity}%</p>
           </div>
         </div>
       )}
 
       {/* Loading State */}
       {loading && (
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center shadow-lg">
-          <div className="inline-flex items-center justify-center p-4 bg-gray-750 rounded-full mb-4">
-            <svg className="animate-spin h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24">
+        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center shadow-sm">
+          <div className="inline-flex items-center justify-center p-4 bg-purple-50 rounded-full mb-4">
+            <svg className="animate-spin h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path
                 className="opacity-75"
@@ -383,20 +383,20 @@ const LogHistory = ({ onNavigateToLog }) => {
               />
             </svg>
           </div>
-          <p className="text-gray-300 font-medium">Loading logs...</p>
+          <p className="text-gray-900 font-medium">Loading logs...</p>
           <p className="text-xs text-gray-500 mt-1">Fetching records from server</p>
         </div>
       )}
 
       {/* Error State */}
       {!loading && error && (
-        <div className="bg-gray-800 rounded-lg border border-red-800/60 p-8 text-center shadow-lg">
-          <div className="text-red-400 text-3xl mb-2">⚠️</div>
-          <h3 className="text-lg font-semibold text-red-300">Unable to Load Logs</h3>
-          <p className="text-sm text-gray-400 mt-1 max-w-md mx-auto">{error}</p>
+        <div className="bg-white rounded-xl border border-red-200 p-8 text-center shadow-sm">
+          <div className="text-red-500 text-3xl mb-2">⚠️</div>
+          <h3 className="text-lg font-semibold text-red-700">Unable to Load Logs</h3>
+          <p className="text-sm text-gray-600 mt-1 max-w-md mx-auto">{error}</p>
           <button
             onClick={handleRefresh}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded text-sm font-medium transition"
+            className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition shadow-sm"
           >
             Try Again
           </button>
@@ -405,12 +405,12 @@ const LogHistory = ({ onNavigateToLog }) => {
 
       {/* Empty State */}
       {!loading && !error && logs.length === 0 && (
-        <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center shadow-lg">
+        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center shadow-sm">
           <div className="text-4xl mb-3">🗓️</div>
-          <h3 className="text-lg font-medium text-gray-200">
+          <h3 className="text-lg font-medium text-gray-900">
             {isFiltered ? 'No Logs Match Your Date Filter' : 'No Logs Recorded Yet'}
           </h3>
-          <p className="text-sm text-gray-400 mt-2 max-w-sm mx-auto">
+          <p className="text-sm text-gray-500 mt-2 max-w-sm mx-auto">
             {isFiltered
               ? 'Try choosing a broader date range or clear the filter to view all logs.'
               : "You haven't logged any daily metrics yet. Start recording your daily routine to see trends and productivity insights!"}
@@ -418,7 +418,7 @@ const LogHistory = ({ onNavigateToLog }) => {
           {isFiltered ? (
             <button
               onClick={handleClearFilters}
-              className="mt-5 bg-gray-700 hover:bg-gray-600 text-white px-5 py-2 rounded font-medium transition shadow border border-gray-600 inline-flex items-center gap-2"
+              className="mt-5 bg-white hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg font-medium transition shadow-sm border border-gray-300 inline-flex items-center gap-2"
             >
               <span>✕</span> Clear Date Filter
             </button>
@@ -426,7 +426,7 @@ const LogHistory = ({ onNavigateToLog }) => {
             onNavigateToLog && (
               <button
                 onClick={onNavigateToLog}
-                className="mt-5 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded font-medium transition shadow-md inline-flex items-center gap-2"
+                className="mt-5 bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 rounded-lg font-medium transition shadow-sm inline-flex items-center gap-2"
               >
                 <span>➕</span> Log Today's Data
               </button>
@@ -437,11 +437,11 @@ const LogHistory = ({ onNavigateToLog }) => {
 
       {/* Logs Table */}
       {!loading && !error && logs.length > 0 && (
-        <div className="bg-gray-800 rounded-lg border border-gray-700 shadow-lg overflow-hidden">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-900/70 border-b border-gray-700 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <tr className="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-4">Sleep</th>
                   <th className="py-3 px-4">Work</th>
@@ -453,15 +453,15 @@ const LogHistory = ({ onNavigateToLog }) => {
                   <th className="py-3 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700/60 text-sm text-gray-300">
+              <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
                 {logs.map((log) => {
                   const mood = log.moodScore ?? log.mood_score ?? 5;
                   const moodColorClass =
                     mood >= 8
-                      ? 'bg-green-900/40 text-green-300 border-green-600/40'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                       : mood >= 5
-                      ? 'bg-yellow-900/40 text-yellow-300 border-yellow-600/40'
-                      : 'bg-red-900/40 text-red-300 border-red-600/40';
+                      ? 'bg-amber-50 text-amber-700 border-amber-200'
+                      : 'bg-rose-50 text-rose-700 border-rose-200';
 
                   const sleepHours = log.sleepHours ?? log.sleep_hours ?? 0;
                   const workHours = log.workHours ?? log.work_hours ?? 0;
@@ -474,40 +474,40 @@ const LogHistory = ({ onNavigateToLog }) => {
                   return (
                     <tr
                       key={log._id}
-                      className="hover:bg-gray-750/50 transition duration-150"
+                      className="hover:bg-gray-50 transition duration-150"
                     >
                       {/* Date */}
-                      <td className="py-3 px-4 font-medium text-white whitespace-nowrap">
+                      <td className="py-3 px-4 font-medium text-gray-900 whitespace-nowrap">
                         {log.date}
                       </td>
 
                       {/* Sleep */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-semibold text-gray-200">{sleepHours}</span>
+                        <span className="font-semibold text-gray-900">{sleepHours}</span>
                         <span className="text-xs text-gray-500 ml-1">hrs</span>
                       </td>
 
                       {/* Work */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-semibold text-gray-200">{workHours}</span>
+                        <span className="font-semibold text-gray-900">{workHours}</span>
                         <span className="text-xs text-gray-500 ml-1">hrs</span>
                       </td>
 
                       {/* Screen Time */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-semibold text-gray-200">{screenTime}</span>
+                        <span className="font-semibold text-gray-900">{screenTime}</span>
                         <span className="text-xs text-gray-500 ml-1">hrs</span>
                       </td>
 
                       {/* Exercise */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-semibold text-gray-200">{exerciseMins}</span>
+                        <span className="font-semibold text-gray-900">{exerciseMins}</span>
                         <span className="text-xs text-gray-500 ml-1">m</span>
                       </td>
 
                       {/* Break */}
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="font-semibold text-gray-200">{breakMins}</span>
+                        <span className="font-semibold text-gray-900">{breakMins}</span>
                         <span className="text-xs text-gray-500 ml-1">m</span>
                       </td>
 
@@ -523,10 +523,10 @@ const LogHistory = ({ onNavigateToLog }) => {
                       {/* Productivity */}
                       <td className="py-3 px-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-blue-400">{prodScore}%</span>
-                          <div className="w-12 bg-gray-700 rounded-full h-1.5 hidden md:block">
+                          <span className="font-semibold text-purple-600">{prodScore}%</span>
+                          <div className="w-12 bg-gray-200 rounded-full h-1.5 hidden md:block">
                             <div
-                              className="bg-blue-500 h-1.5 rounded-full"
+                              className="bg-purple-600 h-1.5 rounded-full"
                               style={{ width: `${Math.min(100, Math.max(0, prodScore))}%` }}
                             />
                           </div>
@@ -539,11 +539,11 @@ const LogHistory = ({ onNavigateToLog }) => {
                           onClick={() => handleDelete(log._id, log.date)}
                           disabled={isDeleting}
                           title="Delete Log"
-                          className="text-red-400 hover:text-red-200 bg-red-950/30 hover:bg-red-900/50 border border-red-800/60 px-3 py-1 rounded text-xs font-semibold transition duration-150 disabled:opacity-50 inline-flex items-center gap-1"
+                          className="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded-lg text-xs font-semibold transition duration-150 disabled:opacity-50 inline-flex items-center gap-1"
                         >
                           {isDeleting ? (
                             <>
-                              <svg className="animate-spin h-3 w-3 text-red-400" fill="none" viewBox="0 0 24 24">
+                              <svg className="animate-spin h-3 w-3 text-red-600" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                               </svg>
@@ -565,12 +565,12 @@ const LogHistory = ({ onNavigateToLog }) => {
           </div>
 
           {/* Pagination Controls Below Table */}
-          <div className="bg-gray-850 px-5 py-4 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="bg-gray-50 px-5 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Range info */}
-            <div className="text-sm text-gray-400">
-              Showing <span className="font-semibold text-white">{startEntryIndex}</span> to{' '}
-              <span className="font-semibold text-white">{endEntryIndex}</span> of{' '}
-              <span className="font-semibold text-white">{totalLogs}</span> entries
+            <div className="text-sm text-gray-600">
+              Showing <span className="font-semibold text-gray-900">{startEntryIndex}</span> to{' '}
+              <span className="font-semibold text-gray-900">{endEntryIndex}</span> of{' '}
+              <span className="font-semibold text-gray-900">{totalLogs}</span> entries
             </div>
 
             {/* Pagination Navigation */}
@@ -579,23 +579,23 @@ const LogHistory = ({ onNavigateToLog }) => {
               <button
                 onClick={handlePrevPage}
                 disabled={page <= 1 || loading}
-                className="bg-gray-800 hover:bg-gray-700 text-white font-medium px-3.5 py-1.5 rounded-lg border border-gray-700 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
+                className="bg-white hover:bg-gray-50 text-gray-700 font-medium px-3.5 py-1.5 rounded-lg border border-gray-300 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
               >
                 <span>←</span>
                 <span>Previous</span>
               </button>
 
               {/* Page Status Badge */}
-              <div className="px-3 py-1.5 bg-gray-800 rounded-lg border border-gray-700 text-sm text-gray-300 font-medium">
-                Page <span className="text-blue-400 font-bold">{page}</span> of{' '}
-                <span className="text-white font-bold">{totalPages}</span>
+              <div className="px-3 py-1.5 bg-white rounded-lg border border-gray-300 text-sm text-gray-600 font-medium shadow-sm">
+                Page <span className="text-purple-600 font-bold">{page}</span> of{' '}
+                <span className="text-gray-900 font-bold">{totalPages}</span>
               </div>
 
               {/* Next Button */}
               <button
                 onClick={handleNextPage}
                 disabled={page >= totalPages || totalPages === 0 || loading}
-                className="bg-gray-800 hover:bg-gray-700 text-white font-medium px-3.5 py-1.5 rounded-lg border border-gray-700 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
+                className="bg-white hover:bg-gray-50 text-gray-700 font-medium px-3.5 py-1.5 rounded-lg border border-gray-300 text-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
               >
                 <span>Next</span>
                 <span>→</span>
@@ -609,4 +609,3 @@ const LogHistory = ({ onNavigateToLog }) => {
 };
 
 export default LogHistory;
-

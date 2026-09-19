@@ -107,15 +107,15 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4 py-8">
-      <div className="w-full max-w-md rounded-xl bg-gray-800 p-6 sm:p-8 shadow-2xl border border-gray-700">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 shadow-sm border border-gray-200">
         
         {/* Branding Header */}
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-blue-500 flex items-center justify-center gap-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
             <span>⚡</span> LifeFlow
           </h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-sm text-gray-600">
             {step === 'request' ? 'Reset your account password' : 'Enter verification code & new password'}
           </p>
         </div>
@@ -132,19 +132,19 @@ const ForgotPassword = () => {
               onSubmit={handleRequestOtp}
               className="space-y-5"
             >
-              <div className="bg-gray-750 p-4 rounded-lg border border-gray-700 text-xs text-gray-300 leading-relaxed">
+              <div className="bg-purple-50/70 p-4 rounded-xl border border-purple-100 text-xs text-purple-900 leading-relaxed">
                 Enter your registered email address below. We'll send you a 6-digit verification code to reset your password.
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
                   Email Address
                 </label>
                 <input
                   type="email"
                   required
                   autoFocus
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
                   placeholder="Enter your registered email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -154,7 +154,7 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-blue-600 p-3 text-white font-semibold hover:bg-blue-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-blue-600/25"
+                className="w-full rounded-lg bg-purple-600 p-3 text-white font-semibold hover:bg-purple-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
               >
                 {loading ? (
                   <>
@@ -170,7 +170,7 @@ const ForgotPassword = () => {
               </button>
 
               <div className="text-center pt-2">
-                <Link to="/login" className="text-sm text-blue-400 hover:text-blue-300 font-medium hover:underline inline-flex items-center gap-1">
+                <Link to="/login" className="text-sm text-purple-600 hover:text-purple-700 font-medium hover:underline inline-flex items-center gap-1">
                   <span>←</span> Back to Sign In
                 </Link>
               </div>
@@ -187,18 +187,18 @@ const ForgotPassword = () => {
               className="space-y-4"
             >
               {/* Notification Banner */}
-              <div className="bg-blue-950/40 border border-blue-500/40 rounded-lg p-3 text-center">
-                <p className="text-xs text-blue-300">
+              <div className="bg-purple-50 border border-purple-200 rounded-xl p-3 text-center">
+                <p className="text-xs text-purple-700">
                   Reset code sent to
                 </p>
-                <p className="text-sm font-bold text-white mt-0.5 truncate" title={email}>
+                <p className="text-sm font-bold text-gray-900 mt-0.5 truncate" title={email}>
                   {email}
                 </p>
               </div>
 
               {/* 6-Digit OTP Code Input */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5 text-center">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1.5 text-center">
                   Enter 6-Digit Reset Code
                 </label>
                 <input
@@ -208,7 +208,7 @@ const ForgotPassword = () => {
                   required
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                  className="w-full tracking-[0.5em] text-center font-mono text-xl font-bold rounded-lg border border-gray-600 bg-gray-750 p-2.5 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition shadow-inner"
+                  className="w-full tracking-[0.5em] text-center font-mono text-xl font-bold rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition shadow-inner"
                   placeholder="------"
                 />
               </div>
@@ -216,13 +216,13 @@ const ForgotPassword = () => {
               {/* New Password Input */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700">
                     New Password
                   </label>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] text-blue-400 hover:text-blue-300"
+                    className="text-[11px] text-purple-600 hover:text-purple-700 font-medium"
                   >
                     {showPassword ? 'Hide' : 'Show'}
                   </button>
@@ -230,7 +230,7 @@ const ForgotPassword = () => {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition text-sm"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition text-sm"
                   placeholder="Min. 8 chars (1 uppercase, 1 number, 1 special)"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
@@ -239,13 +239,13 @@ const ForgotPassword = () => {
 
               {/* Confirm New Password Input */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
                   Confirm New Password
                 </label>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition text-sm"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition text-sm"
                   placeholder="Re-enter your new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -255,7 +255,7 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full rounded-lg bg-emerald-600 p-3 text-white font-semibold hover:bg-emerald-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-600/25 mt-2"
+                className="w-full rounded-lg bg-purple-600 p-3 text-white font-semibold hover:bg-purple-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm mt-2"
               >
                 {loading ? (
                   <>
@@ -271,14 +271,14 @@ const ForgotPassword = () => {
               </button>
 
               {/* Resend & Back Actions */}
-              <div className="flex items-center justify-between text-xs text-gray-400 pt-3 border-t border-gray-700/60">
+              <div className="flex items-center justify-between text-xs text-gray-600 pt-3 border-t border-gray-200">
                 <button
                   type="button"
                   onClick={() => {
                     setStep('request');
                     setOtp('');
                   }}
-                  className="hover:text-white transition flex items-center gap-1"
+                  className="hover:text-gray-900 transition flex items-center gap-1"
                 >
                   <span>←</span> Change Email
                 </button>
@@ -287,7 +287,7 @@ const ForgotPassword = () => {
                   type="button"
                   onClick={handleResendOtp}
                   disabled={resending}
-                  className="text-blue-400 hover:text-blue-300 font-semibold disabled:opacity-50 transition"
+                  className="text-purple-600 hover:text-purple-700 font-semibold disabled:opacity-50 transition"
                 >
                   {resending ? 'Sending...' : 'Resend Code'}
                 </button>

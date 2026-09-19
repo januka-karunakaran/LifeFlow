@@ -114,37 +114,37 @@ const UserProfile = () => {
       className="max-w-4xl mx-auto space-y-6"
     >
       {/* User Header Profile Card */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 shadow-lg flex flex-col sm:flex-row items-center sm:items-start gap-6">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6">
         {/* Avatar Placeholder with Status Badge */}
         <div className="relative">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white text-3xl font-extrabold shadow-xl border-4 border-gray-700">
+          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold shadow-sm border-4 border-white">
             {getInitials(user.name)}
           </div>
           <span
             title="Active"
-            className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-gray-800"
+            className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white"
           />
         </div>
 
         {/* User Info */}
         <div className="text-center sm:text-left flex-1">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
-            <h2 className="text-2xl font-bold text-white">{user.name}</h2>
-            <span className="self-center sm:self-auto text-xs px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 font-semibold">
+            <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+            <span className="self-center sm:self-auto text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200 font-semibold">
               Pro Member
             </span>
           </div>
 
-          <p className="text-sm text-gray-400 mb-4">{loading ? 'Loading...' : user.email}</p>
+          <p className="text-sm text-gray-600 mb-4">{loading ? 'Loading...' : user.email}</p>
 
-          <div className="flex flex-wrap justify-center sm:justify-start gap-3 text-xs text-gray-400">
-            <div className="bg-gray-750 px-3 py-1.5 rounded-lg border border-gray-700">
+          <div className="flex flex-wrap justify-center sm:justify-start gap-3 text-xs text-gray-600">
+            <div className="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
               <span className="text-gray-500 mr-1">Status:</span>
-              <span className="text-emerald-400 font-medium">Active Account</span>
+              <span className="text-emerald-600 font-medium">Active Account</span>
             </div>
-            <div className="bg-gray-750 px-3 py-1.5 rounded-lg border border-gray-700">
+            <div className="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
               <span className="text-gray-500 mr-1">Timezone:</span>
-              <span className="text-gray-300 font-medium">Local (Browser)</span>
+              <span className="text-gray-700 font-medium">Local (Browser)</span>
             </div>
           </div>
         </div>
@@ -155,8 +155,8 @@ const UserProfile = () => {
         <div
           className={`p-4 rounded-lg text-sm border flex items-center justify-between ${
             notice.type === 'success'
-              ? 'bg-green-900/30 border-green-500/60 text-green-300'
-              : 'bg-red-900/30 border-red-500/60 text-red-300'
+              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+              : 'bg-red-50 border-red-200 text-red-700'
           }`}
         >
           <span>{notice.message}</span>
@@ -171,11 +171,11 @@ const UserProfile = () => {
       )}
 
       {/* Account Settings & Mock Password Form */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 shadow-lg">
-        <h3 className="text-lg font-semibold text-gray-200 mb-1 flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
           <span>⚙️</span> Account Settings
         </h3>
-        <p className="text-xs text-gray-400 mb-6">
+        <p className="text-xs text-gray-600 mb-6">
           Manage your account preferences and security options.
         </p>
 
@@ -183,30 +183,30 @@ const UserProfile = () => {
           {/* Email Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Full Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Full Name</label>
               <input
                 type="text"
                 value={user.name}
                 disabled
-                className="w-full rounded bg-gray-700/60 border border-gray-600 p-2.5 text-gray-300 text-sm cursor-not-allowed"
+                className="w-full rounded-lg bg-gray-50 border border-gray-300 p-2.5 text-gray-900 text-sm cursor-not-allowed"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Email Address</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Email Address</label>
               <input
                 type="email"
                 value={user.email}
                 disabled
-                className="w-full rounded bg-gray-700/60 border border-gray-600 p-2.5 text-gray-300 text-sm cursor-not-allowed"
+                className="w-full rounded-lg bg-gray-50 border border-gray-300 p-2.5 text-gray-900 text-sm cursor-not-allowed"
               />
             </div>
           </div>
 
-          <div className="border-t border-gray-700 pt-6">
-            <h4 className="text-sm font-semibold text-gray-300 mb-3">Change Password (Mock UI)</h4>
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Change Password</h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   Current Password
                 </label>
                 <input
@@ -215,12 +215,12 @@ const UserProfile = () => {
                   value={formData.currentPassword}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   New Password
                 </label>
                 <input
@@ -229,12 +229,12 @@ const UserProfile = () => {
                   value={formData.newPassword}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   Confirm Password
                 </label>
                 <input
@@ -243,15 +243,15 @@ const UserProfile = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white text-sm focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg bg-white border border-gray-300 p-2 text-gray-900 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none transition"
                 />
               </div>
             </div>
           </div>
 
           {/* Preferences Toggles */}
-          <div className="border-t border-gray-700 pt-6 space-y-3">
-            <h4 className="text-sm font-semibold text-gray-300 mb-2">Notification Preferences</h4>
+          <div className="border-t border-gray-200 pt-6 space-y-3">
+            <h4 className="text-sm font-semibold text-gray-900 mb-2">Notification Preferences</h4>
 
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -259,9 +259,9 @@ const UserProfile = () => {
                 name="dailyReminders"
                 checked={formData.dailyReminders}
                 onChange={handleChange}
-                className="w-4 h-4 rounded text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500"
+                className="w-4 h-4 rounded text-purple-600 bg-white border-gray-300 focus:ring-purple-500 transition"
               />
-              <span className="text-xs text-gray-300">
+              <span className="text-xs text-gray-700">
                 Daily routine tracking reminders (Evening nudge)
               </span>
             </label>
@@ -272,18 +272,18 @@ const UserProfile = () => {
                 name="weeklyReports"
                 checked={formData.weeklyReports}
                 onChange={handleChange}
-                className="w-4 h-4 rounded text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500"
+                className="w-4 h-4 rounded text-purple-600 bg-white border-gray-300 focus:ring-purple-500 transition"
               />
-              <span className="text-xs text-gray-300">
+              <span className="text-xs text-gray-700">
                 Weekly AI productivity summary digest
               </span>
             </label>
           </div>
 
-          <div className="border-t border-gray-700 pt-6 flex justify-end">
+          <div className="border-t border-gray-200 pt-6 flex justify-end">
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition shadow-md hover:shadow-blue-600/20"
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm"
             >
               Save Preferences
             </button>

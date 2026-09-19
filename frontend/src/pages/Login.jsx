@@ -47,21 +47,21 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4">
-      <div className="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-lg border border-gray-700">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm border border-gray-200">
         
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-blue-500">LifeFlow</h1>
-          <p className="mt-2 text-sm text-gray-400">Sign in to your account</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">LifeFlow</h1>
+          <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700">Email Address</label>
             <input
               type="email"
               required
-              className="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -70,15 +70,15 @@ const Login = () => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-300">Password</label>
-              <Link to="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 hover:underline">
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <Link to="/forgot-password" className="text-xs text-purple-600 hover:text-purple-700 hover:underline font-medium">
                 Forgot Password?
               </Link>
             </div>
             <input
               type="password"
               required
-              className="mt-1 w-full rounded-md border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -88,17 +88,17 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-blue-600 p-2.5 text-white font-semibold hover:bg-blue-700 transition duration-200 disabled:opacity-50"
+            className="w-full rounded-lg bg-purple-600 p-2.5 text-white font-semibold hover:bg-purple-700 transition duration-200 shadow-sm disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-sm text-gray-600">
           Don't have an account?{' '}
-          <a href="/register" className="text-blue-500 hover:underline">
+          <Link to="/register" className="text-purple-600 hover:underline font-medium">
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

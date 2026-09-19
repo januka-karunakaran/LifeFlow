@@ -121,14 +121,14 @@ const DailyLogForm = ({ onLogAdded }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 max-w-4xl mx-auto"
+      className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-4xl mx-auto"
     >
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
             <span>📝</span> Log Today's Data
           </h2>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             Record your actual metrics to track productivity, habits, and well-being over time.
           </p>
         </div>
@@ -137,7 +137,7 @@ const DailyLogForm = ({ onLogAdded }) => {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {inputFields.map((field) => (
           <div key={field.name}>
-            <label className="block text-xs font-medium text-gray-400 mb-1">
+            <label className="block text-xs font-medium text-gray-700 mb-1">
               {field.label}
             </label>
             <input
@@ -148,7 +148,7 @@ const DailyLogForm = ({ onLogAdded }) => {
               max={field.max}
               value={formData[field.name]}
               onChange={handleChange}
-              className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white focus:border-blue-500 focus:outline-none transition"
+              className="w-full rounded-lg bg-white border border-gray-300 p-2 text-gray-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none transition"
               required
             />
           </div>
@@ -158,7 +158,7 @@ const DailyLogForm = ({ onLogAdded }) => {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded font-bold transition disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-blue-600/20"
+            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg font-bold transition disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
           >
             {loading ? (
               <>
@@ -176,7 +176,7 @@ const DailyLogForm = ({ onLogAdded }) => {
           <button
             type="button"
             onClick={() => setFormData(initialFormState)}
-            className="bg-gray-700 hover:bg-gray-600 text-gray-300 px-5 py-3 rounded font-medium transition border border-gray-600"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-3 rounded-lg font-medium transition border border-gray-200"
           >
             Reset Form
           </button>

@@ -61,7 +61,7 @@ const GamificationPanel = ({ logs = [] }) => {
         (log) =>
           Number(log.productivityScore ?? log.productivity_score ?? log.predicted_productivity ?? 0) > 85
       ),
-      activeColor: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50',
+      activeColor: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     {
       id: 'consistent_achiever',
@@ -69,7 +69,7 @@ const GamificationPanel = ({ logs = [] }) => {
       icon: '🏆',
       description: 'Logged 5 or more total daily records',
       isUnlocked: logs.length >= 5,
-      activeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/50',
+      activeColor: 'bg-blue-50 text-blue-700 border-blue-200',
     },
     {
       id: 'streak_warrior',
@@ -77,7 +77,7 @@ const GamificationPanel = ({ logs = [] }) => {
       icon: '⚡',
       description: 'Reached a 3-day continuous logging streak',
       isUnlocked: currentStreak >= 3,
-      activeColor: 'bg-orange-500/20 text-orange-300 border-orange-500/50',
+      activeColor: 'bg-orange-50 text-orange-700 border-orange-200',
     },
     {
       id: 'mindful_balancer',
@@ -89,7 +89,7 @@ const GamificationPanel = ({ logs = [] }) => {
         const screen = Number(log.screenTime ?? log.screen_time ?? 0);
         return exercise >= 30 && screen > 0 && screen <= 4;
       }),
-      activeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50',
+      activeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     },
   ];
 
@@ -100,28 +100,28 @@ const GamificationPanel = ({ logs = [] }) => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-gray-800 rounded-xl border border-gray-700 p-5 shadow-lg mb-8 max-w-6xl mx-auto"
+      className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm mb-8 max-w-6xl mx-auto"
     >
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left Section: Streak Counter */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/30 text-3xl shadow-inner">
+          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-50 border border-orange-200 text-3xl shadow-sm">
             <span className={currentStreak > 0 ? 'animate-pulse' : ''}>🔥</span>
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-bold text-white tracking-wide">
+              <h2 className="text-xl font-bold text-gray-900 tracking-wide">
                 {currentStreak > 0 ? `${currentStreak} Day Streak!` : '0 Day Streak'}
               </h2>
               {currentStreak >= 3 && (
-                <span className="text-xs bg-orange-500/20 text-orange-400 font-semibold px-2 py-0.5 rounded-full border border-orange-500/40">
+                <span className="text-xs bg-orange-50 text-orange-700 font-semibold px-2 py-0.5 rounded-full border border-orange-200">
                   On Fire!
                 </span>
               )}
             </div>
 
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               {hasLoggedToday
                 ? "You've logged today! Keep the momentum tomorrow."
                 : currentStreak > 0
@@ -134,10 +134,10 @@ const GamificationPanel = ({ logs = [] }) => {
         {/* Right Section: Badges & Achievements */}
         <div className="w-full md:w-auto flex flex-col items-start md:items-end">
           <div className="flex items-center justify-between w-full md:w-auto gap-4 mb-2.5">
-            <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-600">
               Achievements
             </span>
-            <span className="text-xs font-bold text-gray-400 bg-gray-750 px-2 py-0.5 rounded-md border border-gray-700">
+            <span className="text-xs font-bold text-gray-700 bg-gray-100 px-2 py-0.5 rounded-md border border-gray-200">
               {unlockedCount} / {badges.length} Unlocked
             </span>
           </div>
@@ -151,7 +151,7 @@ const GamificationPanel = ({ logs = [] }) => {
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 cursor-default ${
                   badge.isUnlocked
                     ? `${badge.activeColor} shadow-sm`
-                    : 'bg-gray-700/40 text-gray-500 border-gray-700/60 opacity-60'
+                    : 'bg-gray-50 text-gray-400 border-gray-200 opacity-75'
                 }`}
               >
                 <span>{badge.isUnlocked ? badge.icon : '🔒'}</span>
