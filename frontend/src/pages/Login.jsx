@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     try {
@@ -25,11 +24,14 @@ const Login = () => {
       // Save the JWT token securely in localStorage
       localStorage.setItem('token', response.data.token);
       
+      toast.success('Welcome back!');
+
       // Redirect user to the dashboard upon success
       navigate('/dashboard');
     } catch (err) {
       // Handle incorrect email/password errors from backend
-      setError(err.response?.data?.message || 'Something went wrong. Please try again.');
+      const errorMessage = err.response?.data?.message || 'Invalid email or password. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -43,13 +45,6 @@ const Login = () => {
           <h1 className="text-3xl font-bold text-blue-500">LifeFlow</h1>
           <p className="mt-2 text-sm text-gray-400">Sign in to your account</p>
         </div>
-
-        {/* Display Error Message if login fails */}
-        {error && (
-          <div className="mb-4 rounded bg-red-500/10 p-3 text-sm text-red-500 border border-red-500/50">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
