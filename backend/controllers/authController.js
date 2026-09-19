@@ -1,6 +1,10 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmail = require('../utils/sendEmail');
+const { OAuth2Client } = require('google-auth-library');
+const crypto = require('crypto');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // @desc    Register a new user and send OTP
 // @route   POST /api/auth/register
@@ -335,4 +339,53 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, verifyOTP, resendOTP, loginUser, getMe, forgotPassword, resetPassword };
+// @desc    Auth user with Google
+// @route   POST /api/auth/google
+// @access  Public
+const googleLogin = async (req, res) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({ message: 'Google credential token is missing' });
+    }
+
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, email_verified } = payload;
+
+    if (!email_verified) {
+      return res.status(400).json({ message: 'Google email is not verified' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    let user = await User.findOne({ email: normalizedEmail });
+
+    // NEW LOGIC: Block new users
+    if (!user) {
+      return res.status(400).json({ message: 'Account not found. Please sign up first.' });
+    }
+
+    // User exists, log them in (also ensure they are verified if not already)
+    if (!user.isVerified) {
+      user.isVerified = true;
+      await user.save();
+    }
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+      message: 'Logged in with Google successfully!',
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Google authentication failed' });
+  }
+};
+
+module.exports = { registerUser, verifyOTP, resendOTP, loginUser, getMe, forgotPassword, resetPassword, googleLogin };

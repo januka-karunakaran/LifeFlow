@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { GoogleLogin } from '@react-oauth/google';
 import { loginSchema, validateForm } from '../utils/validation';
 
 const Login = () => {
@@ -44,6 +45,26 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const response = await axios.post('http://localhost:5000/api/auth/google', {
+        credential: credentialResponse.credential,
+      });
+      localStorage.setItem('token', response.data.token);
+      toast.success('Welcome!');
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Google authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast.error('Google Login Failed');
   };
 
   return (
@@ -93,6 +114,23 @@ const Login = () => {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        <div className="mt-6 flex items-center justify-center space-x-2">
+          <span className="h-px w-full bg-gray-200"></span>
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Or</span>
+          <span className="h-px w-full bg-gray-200"></span>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            theme="outline"
+            size="large"
+            text="signin_with"
+            shape="rectangular"
+          />
+        </div>
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Don't have an account?{' '}
