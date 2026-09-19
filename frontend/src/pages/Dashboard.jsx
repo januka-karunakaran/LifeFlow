@@ -53,7 +53,7 @@ const Dashboard = () => {
     setLogsError('');
 
     try {
-      const response = await axios.get('http://localhost:5000/api/logs', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/logs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -79,7 +79,7 @@ const Dashboard = () => {
       if (!token) return;
 
       try {
-        const response = await axios.get('http://localhost:5000/api/logs', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/logs`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -122,7 +122,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       // Sending data to Node.js which in turn calls Python FastAPI
-      const response = await axios.post('http://localhost:5000/api/predictions', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_ML_API_URL}/api/predictions`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

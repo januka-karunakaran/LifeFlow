@@ -31,7 +31,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
         name,
         email,
         password,
@@ -60,7 +60,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-otp', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/verify-otp`, {
         email,
         otp: cleanOtp,
       });
@@ -80,7 +80,7 @@ const Register = () => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/api/auth/google', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
         credential: credentialResponse.credential,
       });
       localStorage.setItem('token', response.data.token);
@@ -103,7 +103,7 @@ const Register = () => {
     setResending(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/resend-otp', { email });
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/resend-otp`, { email });
       toast.success(response.data?.message || 'New verification code sent to your email.');
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Failed to resend code. Please try again.';
