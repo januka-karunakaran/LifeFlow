@@ -1,0 +1,71 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  frontend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Linting
+        run: npm run lint
+      - name: Run Tests
+        run: npm run test -- --run
+      - name: Build
+        run: npm run build
+
+  backend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
+      - name: Install dependencies
+        run: npm ci
+
+  ml-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ml-service
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: './ml-service/requirements.txt'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+  deploy:
+    needs: [frontend-ci, backend-ci, ml-ci]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Trigger Render Deploy
+        run: echo "To trigger a deployment, add your Render Deploy Hook URL to GitHub Secrets as RENDER_DEPLOY_HOOK_URL, then uncomment the curl command below."
+        # run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
