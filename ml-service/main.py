@@ -42,20 +42,33 @@ def load_model_file(filename: str):
             return joblib.load(path)
     raise FileNotFoundError(f"Model file {filename} could not be located in {paths_to_check}")
 
-# Load models and feature list on startup
-try:
-    prod_model = load_model_file("model_productivity.pkl")
-    burnout_model = load_model_file("model_burnout.pkl")
+# Load models and feature list on startup (with automatic training fallback)
+def ensure_models():
+    global prod_model, burnout_model, feature_columns
     try:
-        feature_columns = load_model_file("features.pkl")
-    except Exception:
-        feature_columns = ['sleep_hours', 'work_hours', 'screen_time', 'exercise_minutes', 'mood_score']
-    print("[LifeFlow ML] ML models and feature definitions loaded successfully!")
-except Exception as e:
-    print(f"[LifeFlow ML] Warning during model initialization: {e}")
-    prod_model = None
-    burnout_model = None
-    feature_columns = ['sleep_hours', 'work_hours', 'screen_time', 'exercise_minutes', 'mood_score']
+        prod_model = load_model_file("model_productivity.pkl")
+        burnout_model = load_model_file("model_burnout.pkl")
+        try:
+            feature_columns = load_model_file("features.pkl")
+        except Exception:
+            feature_columns = ['sleep_hours', 'work_hours', 'screen_time', 'exercise_minutes', 'mood_score']
+        print("[LifeFlow ML] ML models and feature definitions loaded successfully!")
+    except Exception as e:
+        print(f"[LifeFlow ML] Models not found ({e}). Auto-training now...")
+        try:
+            from train_model import train_and_save_models
+            train_and_save_models()
+            prod_model = load_model_file("model_productivity.pkl")
+            burnout_model = load_model_file("model_burnout.pkl")
+            feature_columns = ['sleep_hours', 'work_hours', 'screen_time', 'exercise_minutes', 'mood_score']
+            print("[LifeFlow ML] Models auto-trained and loaded successfully!")
+        except Exception as train_err:
+            print(f"[LifeFlow ML] Auto-training failed: {train_err}")
+            prod_model = None
+            burnout_model = None
+            feature_columns = ['sleep_hours', 'work_hours', 'screen_time', 'exercise_minutes', 'mood_score']
+
+ensure_models()
 
 
 # Pydantic schema for Daily Log payload
