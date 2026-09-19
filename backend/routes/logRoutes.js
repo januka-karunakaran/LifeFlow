@@ -1,5 +1,5 @@
 const express = require('express');
-const { createLog, getLogs, deleteLog } = require('../controllers/logController');
+const { createLog, getLogs, deleteLog, getLeaderboard } = require('../controllers/logController');
 const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -8,6 +8,10 @@ const router = express.Router();
 router.route('/')
   .post(protect, createLog)
   .get(protect, getLogs);
+
+// Leaderboard route - must be declared before /:id
+router.route('/leaderboard')
+  .get(protect, getLeaderboard);
 
 router.route('/:id')
   .delete(protect, deleteLog);

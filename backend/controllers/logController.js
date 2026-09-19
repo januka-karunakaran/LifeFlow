@@ -102,4 +102,60 @@ const deleteLog = async (req, res) => {
   }
 };
 
-module.exports = { createLog, getLogs, deleteLog };
+// @desc    Get top 10 users by average productivity score (Leaderboard)
+// @route   GET /api/logs/leaderboard
+// @access  Private
+const getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await DailyLog.aggregate([
+      // Group by userId and compute average productivity
+      {
+        $group: {
+          _id: '$userId',
+          averageProductivity: { $avg: '$productivityScore' },
+          totalLogs: { $sum: 1 },
+          highestScore: { $max: '$productivityScore' },
+        },
+      },
+      // Sort users in descending order of average productivity
+      {
+        $sort: { averageProductivity: -1 },
+      },
+      // Limit to top 10 users
+      {
+        $limit: 10,
+      },
+      // Lookup user's name and email from User collection
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'userDetails',
+        },
+      },
+      // Unwind user details array
+      {
+        $unwind: '$userDetails',
+      },
+      // Format final output
+      {
+        $project: {
+          _id: 1,
+          userId: '$_id',
+          name: '$userDetails.name',
+          email: '$userDetails.email',
+          averageProductivity: { $round: ['$averageProductivity', 1] },
+          totalLogs: 1,
+          highestScore: 1,
+        },
+      },
+    ]);
+
+    res.json(leaderboard);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { createLog, getLogs, deleteLog, getLeaderboard };
