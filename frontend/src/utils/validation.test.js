@@ -124,11 +124,11 @@ describe('Zod Form Validation Schemas', () => {
   });
 
   describe('registerSchema', () => {
-    it('should validate valid user registration data', () => {
+    it('should validate valid user registration data with strong password', () => {
       const validRegister = {
         name: 'Jane Doe',
         email: 'jane@example.com',
-        password: 'password123',
+        password: 'Password123!',
       };
 
       const result = validateForm(registerSchema, validRegister);
@@ -139,12 +139,72 @@ describe('Zod Form Validation Schemas', () => {
       const invalidRegister = {
         name: 'A',
         email: 'jane@example.com',
-        password: 'password123',
+        password: 'Password123!',
       };
 
       const result = validateForm(registerSchema, invalidRegister);
       expect(result.success).toBe(false);
       expect(result.error).toBe('Name must be at least 2 characters long');
+    });
+
+    it('should fail when password is less than 8 characters', () => {
+      const invalidRegister = {
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        password: 'Pass1!',
+      };
+
+      const result = validateForm(registerSchema, invalidRegister);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must be at least 8 characters long');
+    });
+
+    it('should fail when password lacks an uppercase letter', () => {
+      const invalidRegister = {
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        password: 'password123!',
+      };
+
+      const result = validateForm(registerSchema, invalidRegister);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must contain at least one uppercase letter');
+    });
+
+    it('should fail when password lacks a lowercase letter', () => {
+      const invalidRegister = {
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        password: 'PASSWORD123!',
+      };
+
+      const result = validateForm(registerSchema, invalidRegister);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must contain at least one lowercase letter');
+    });
+
+    it('should fail when password lacks a number', () => {
+      const invalidRegister = {
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        password: 'Password!@#',
+      };
+
+      const result = validateForm(registerSchema, invalidRegister);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must contain at least one number');
+    });
+
+    it('should fail when password lacks a special character', () => {
+      const invalidRegister = {
+        name: 'Jane Doe',
+        email: 'jane@example.com',
+        password: 'Password123',
+      };
+
+      const result = validateForm(registerSchema, invalidRegister);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must contain at least one special character');
     });
   });
 });
