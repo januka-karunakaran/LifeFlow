@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { GoogleLogin } from '@react-oauth/google';
 import { registerSchema, validateForm } from '../utils/validation';
 
 const Register = () => {
@@ -74,6 +75,26 @@ const Register = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      const response = await axios.post('http://localhost:5000/api/auth/google', {
+        credential: credentialResponse.credential,
+      });
+      localStorage.setItem('token', response.data.token);
+      toast.success('Registration complete! Welcome to LifeFlow.');
+      navigate('/dashboard');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Google authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast.error('Google Sign-Up Failed');
   };
 
   // Resend OTP handler
@@ -184,6 +205,23 @@ const Register = () => {
                   Sign In here
                 </a>
               </p>
+
+              <div className="mt-4 flex items-center justify-center space-x-2">
+                <span className="h-px w-full bg-gray-200"></span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Or</span>
+                <span className="h-px w-full bg-gray-200"></span>
+              </div>
+
+              <div className="mt-4 flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  theme="outline"
+                  size="large"
+                  text="signup_with"
+                  shape="rectangular"
+                />
+              </div>
             </motion.form>
           ) : (
             /* Step 2: OTP Verification Form */
