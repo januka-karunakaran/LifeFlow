@@ -17,7 +17,12 @@ app = FastAPI(
 # Enable CORS for frontend and backend integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://life-flow-ten.vercel.app", 
+        "https://lifeflow-7u72.onrender.com",
+        "http://localhost:5173",
+        "http://localhost:3000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
