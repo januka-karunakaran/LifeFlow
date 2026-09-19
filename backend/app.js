@@ -10,7 +10,9 @@ const predictionRoutes = require('./routes/predictionRoutes');
 const app = express();
 
 // Middlewares
-app.use(helmet());
+app.use(helmet({
+  crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }
+}));
 app.use(cors());
 app.use(express.json());
 
