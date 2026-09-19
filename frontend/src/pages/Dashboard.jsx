@@ -56,8 +56,12 @@ const Dashboard = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          limit: 100, // Fetch up to 100 recent logs for analytics & streaks
+        },
       });
-      setLogs(Array.isArray(response.data) ? response.data : []);
+      const data = response.data;
+      setLogs(Array.isArray(data) ? data : (data?.logs || []));
     } catch (err) {
       setLogsError(err.response?.data?.message || 'Failed to fetch logs data.');
     } finally {
@@ -78,9 +82,13 @@ const Dashboard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          params: {
+            limit: 100, // Fetch up to 100 recent logs for analytics & streaks
+          },
         });
         if (!ignore) {
-          setLogs(Array.isArray(response.data) ? response.data : []);
+          const data = response.data;
+          setLogs(Array.isArray(data) ? data : (data?.logs || []));
         }
       } catch (err) {
         if (!ignore) {

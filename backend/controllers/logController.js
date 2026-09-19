@@ -43,14 +43,43 @@ const createLog = async (req, res) => {
   }
 };
 
-// @desc    Get all daily logs for the logged-in user
+// @desc    Get all daily logs for the logged-in user with pagination and date filtering
 // @route   GET /api/logs
 // @access  Private
 const getLogs = async (req, res) => {
   try {
-    // Fetch logs only for the logged-in user, sorted by date (newest first)
-    const logs = await DailyLog.find({ userId: req.user._id }).sort({ date: -1 });
-    res.json(logs);
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+    const { startDate, endDate } = req.query;
+
+    const query = { userId: req.user._id };
+
+    if (startDate || endDate) {
+      query.date = {};
+      if (startDate) {
+        query.date.$gte = startDate;
+      }
+      if (endDate) {
+        query.date.$lte = endDate;
+      }
+    }
+
+    const totalLogs = await DailyLog.countDocuments(query);
+    const totalPages = Math.ceil(totalLogs / limit) || 1;
+    const skip = (page - 1) * limit;
+
+    // Fetch logs sorted by date (newest first)
+    const logs = await DailyLog.find(query)
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      logs,
+      totalPages,
+      currentPage: page,
+      totalLogs,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
