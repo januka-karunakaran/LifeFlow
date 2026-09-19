@@ -82,7 +82,7 @@ const DailyLogForm = ({ onLogAdded }) => {
         productivity_score: Number(formData.productivity_score),
       };
 
-      const response = await axios.post('http://localhost:5000/api/logs', payload, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/logs`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

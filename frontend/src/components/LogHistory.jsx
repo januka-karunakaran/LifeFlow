@@ -38,7 +38,7 @@ const LogHistory = ({ onNavigateToLog }) => {
       if (start) params.startDate = start;
       if (end) params.endDate = end;
 
-      const response = await axios.get('http://localhost:5000/api/logs', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/logs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,7 +121,7 @@ const LogHistory = ({ onNavigateToLog }) => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/logs/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/logs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

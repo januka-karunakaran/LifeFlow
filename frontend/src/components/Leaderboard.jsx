@@ -37,7 +37,7 @@ const Leaderboard = () => {
         return;
       }
 
-      const response = await axios.get('http://localhost:5000/api/logs/leaderboard', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/logs/leaderboard`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

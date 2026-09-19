@@ -31,7 +31,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/forgot-password', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
         email: email.trim(),
       });
 
@@ -72,7 +72,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/reset-password', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/reset-password`, {
         email: email.trim(),
         otp: cleanOtp,
         newPassword,
@@ -94,7 +94,7 @@ const ForgotPassword = () => {
     setResending(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/forgot-password', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
         email: email.trim(),
       });
       toast.success(response.data?.message || 'A fresh reset code has been sent to your email.');
