@@ -93,15 +93,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4 py-8">
-      <div className="w-full max-w-md rounded-xl bg-gray-800 p-6 sm:p-8 shadow-2xl border border-gray-700">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-8">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 shadow-sm border border-gray-200">
         
         {/* Branding Header */}
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-blue-500 flex items-center justify-center gap-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center justify-center gap-2">
             <span>⚡</span> LifeFlow
           </h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-sm text-gray-600">
             {step === 'register' ? 'Create your new account' : 'Verify your email address'}
           </p>
         </div>
@@ -119,13 +119,13 @@ const Register = () => {
               className="space-y-5"
             >
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
                   Full Name
                 </label>
                 <input
                   type="text"
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
                   placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -133,13 +133,13 @@ const Register = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
                   Email Address
                 </label>
                 <input
                   type="email"
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -147,13 +147,13 @@ const Register = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-1">
                   Password
                 </label>
                 <input
                   type="password"
                   required
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition"
                   placeholder="Create a strong password (min. 8 chars, Aa1@)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -163,7 +163,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-blue-600 p-3 text-white font-semibold hover:bg-blue-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-blue-600/25"
+                className="w-full rounded-lg bg-purple-600 p-3 text-white font-semibold hover:bg-purple-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
               >
                 {loading ? (
                   <>
@@ -178,9 +178,9 @@ const Register = () => {
                 )}
               </button>
 
-              <p className="pt-2 text-center text-sm text-gray-400">
+              <p className="pt-2 text-center text-sm text-gray-600">
                 Already have an account?{' '}
-                <a href="/login" className="text-blue-400 hover:text-blue-300 font-medium hover:underline">
+                <a href="/login" className="text-purple-600 hover:text-purple-700 font-medium hover:underline">
                   Sign In here
                 </a>
               </p>
@@ -197,18 +197,18 @@ const Register = () => {
               className="space-y-6"
             >
               {/* Notification Banner */}
-              <div className="bg-blue-950/40 border border-blue-500/40 rounded-lg p-3.5 text-center">
-                <p className="text-xs text-blue-300">
+              <div className="bg-purple-50 border border-purple-200 rounded-xl p-3.5 text-center">
+                <p className="text-xs text-purple-700">
                   We sent a 6-digit verification code to
                 </p>
-                <p className="text-sm font-bold text-white mt-0.5 truncate" title={email}>
+                <p className="text-sm font-bold text-gray-900 mt-0.5 truncate" title={email}>
                   {email}
                 </p>
               </div>
 
               {/* OTP Code Input */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2 text-center">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2 text-center">
                   Enter 6-Digit Code
                 </label>
                 <input
@@ -218,7 +218,7 @@ const Register = () => {
                   required
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                  className="w-full tracking-[0.6em] text-center font-mono text-2xl font-bold rounded-lg border border-gray-600 bg-gray-750 p-3.5 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition shadow-inner"
+                  className="w-full tracking-[0.6em] text-center font-mono text-2xl font-bold rounded-lg border border-gray-300 bg-white p-3.5 text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition shadow-inner"
                   placeholder="------"
                 />
                 <p className="text-[11px] text-gray-500 text-center mt-2">
@@ -229,7 +229,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full rounded-lg bg-emerald-600 p-3 text-white font-semibold hover:bg-emerald-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-emerald-600/25"
+                className="w-full rounded-lg bg-purple-600 p-3 text-white font-semibold hover:bg-purple-700 transition duration-200 disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm"
               >
                 {loading ? (
                   <>
@@ -245,14 +245,14 @@ const Register = () => {
               </button>
 
               {/* Resend & Back Actions */}
-              <div className="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-700/60">
+              <div className="flex items-center justify-between text-xs text-gray-600 pt-2 border-t border-gray-200">
                 <button
                   type="button"
                   onClick={() => {
                     setStep('register');
                     setOtp('');
                   }}
-                  className="hover:text-white transition flex items-center gap-1"
+                  className="hover:text-gray-900 transition flex items-center gap-1"
                 >
                   <span>←</span> Change Email
                 </button>
@@ -261,7 +261,7 @@ const Register = () => {
                   type="button"
                   onClick={handleResendOtp}
                   disabled={resending}
-                  className="text-blue-400 hover:text-blue-300 font-semibold disabled:opacity-50 transition"
+                  className="text-purple-600 hover:text-purple-700 font-semibold disabled:opacity-50 transition"
                 >
                   {resending ? 'Sending...' : 'Resend Code'}
                 </button>

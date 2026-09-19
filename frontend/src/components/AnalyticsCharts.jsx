@@ -18,14 +18,14 @@ import jsPDF from 'jspdf';
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-800 border border-gray-700 p-3 rounded-lg shadow-xl text-xs">
-        <p className="font-semibold text-gray-200 mb-2 border-b border-gray-700 pb-1">{label}</p>
+      <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-xl text-xs">
+        <p className="font-semibold text-gray-900 mb-2 border-b border-gray-100 pb-1">{label}</p>
         {payload.map((entry, index) => (
           <div key={`item-${index}`} className="flex items-center justify-between gap-4 py-0.5">
             <span style={{ color: entry.color }} className="font-medium">
               {entry.name}:
             </span>
-            <span className="font-bold text-white">
+            <span className="font-bold text-gray-900">
               {entry.value} {entry.unit || ''}
             </span>
           </div>
@@ -50,7 +50,7 @@ const AnalyticsCharts = ({ logs = [] }) => {
 
       const canvas = await html2canvas(element, {
         scale: 2, // High resolution capture
-        backgroundColor: '#1f2937', // Preserve dark theme (Tailwind bg-gray-800)
+        backgroundColor: '#ffffff', // Clean light theme background for PDF
         useCORS: true,
         logging: false,
       });
@@ -89,10 +89,10 @@ const AnalyticsCharts = ({ logs = [] }) => {
 
   if (!logs || logs.length === 0) {
     return (
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-12 text-center shadow-lg">
+      <div className="bg-white rounded-xl border border-gray-200 p-12 text-center shadow-sm">
         <div className="text-4xl mb-3">📈</div>
-        <h3 className="text-lg font-medium text-gray-200">No Analytics Data Available</h3>
-        <p className="text-sm text-gray-400 mt-2 max-w-sm mx-auto">
+        <h3 className="text-lg font-medium text-gray-900">No Analytics Data Available</h3>
+        <p className="text-sm text-gray-600 mt-2 max-w-sm mx-auto">
           Start logging your daily metrics to view productivity trends and work vs. screen time comparisons.
         </p>
       </div>
@@ -121,12 +121,12 @@ const AnalyticsCharts = ({ logs = [] }) => {
   return (
     <div className="space-y-4">
       {/* Top Header & Export PDF Button */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-md">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
         <div>
-          <h3 className="text-base font-semibold text-gray-200 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
             <span>📊</span> Visual Performance Analytics
           </h3>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-gray-600 mt-0.5">
             Export high-resolution charts and performance trends as a PDF document.
           </p>
         </div>
@@ -134,7 +134,7 @@ const AnalyticsCharts = ({ logs = [] }) => {
         <button
           onClick={exportPDF}
           disabled={isExporting || logs.length === 0}
-          className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 shadow-md hover:shadow-purple-600/25 shrink-0"
+          className="bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 shadow-sm shrink-0"
           title="Download full analytics report as PDF"
         >
           {isExporting ? (
@@ -164,20 +164,20 @@ const AnalyticsCharts = ({ logs = [] }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="p-4 sm:p-6 bg-gray-850 rounded-2xl border border-gray-700/80 shadow-xl space-y-6"
+        className="p-4 sm:p-6 bg-white rounded-2xl border border-gray-200 shadow-sm space-y-6"
       >
         {/* Report Watermark / Title inside Canvas */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-700 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200 gap-2">
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <span className="text-blue-500">⚡ LifeFlow</span>
-              <span className="text-gray-400 font-normal">| Productivity & Lifestyle Report</span>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <span className="text-purple-600">⚡ LifeFlow</span>
+              <span className="text-gray-500 font-normal">| Productivity & Lifestyle Report</span>
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-gray-500 mt-0.5">
               Generated on {new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })} • {logs.length} entries analyzed
             </p>
           </div>
-          <span className="bg-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full border border-blue-500/40">
+          <span className="bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full border border-purple-200">
             Official Analytics Export
           </span>
         </div>
@@ -185,12 +185,12 @@ const AnalyticsCharts = ({ logs = [] }) => {
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Chart 1: Productivity Trend Line Chart */}
-          <div className="bg-gray-800 p-4 sm:p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
             <div className="mb-4 sm:mb-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-200 flex items-center gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span>📈</span> Productivity Trend
               </h3>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-gray-600 mt-1">
                 Tracking your productivity score across recorded dates
               </p>
             </div>
@@ -198,36 +198,36 @@ const AnalyticsCharts = ({ logs = [] }) => {
             <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 10 }}>
-                  <CartesianGrid stroke="#374151" strokeDasharray="3 3" vertical={false} />
+                  <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="date"
-                    stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                    tickLine={{ stroke: '#4B5563' }}
+                    stroke="#6B7280"
+                    tick={{ fill: '#374151', fontSize: 10 }}
+                    tickLine={{ stroke: '#D1D5DB' }}
                     dy={6}
                   />
                   <YAxis
                     domain={[0, 100]}
-                    stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                    tickLine={{ stroke: '#4B5563' }}
+                    stroke="#6B7280"
+                    tick={{ fill: '#374151', fontSize: 10 }}
+                    tickLine={{ stroke: '#D1D5DB' }}
                     unit="%"
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
                     verticalAlign="top"
                     align="right"
-                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#9CA3AF' }}
+                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#374151' }}
                   />
                   <Line
                     type="monotone"
                     dataKey="predicted_productivity"
                     name="Productivity"
                     unit="%"
-                    stroke="#3B82F6"
+                    stroke="#7C3AED"
                     strokeWidth={3}
-                    dot={{ fill: '#3B82F6', stroke: '#1E40AF', strokeWidth: 2, r: 4 }}
-                    activeDot={{ fill: '#60A5FA', stroke: '#FFFFFF', strokeWidth: 2, r: 6 }}
+                    dot={{ fill: '#7C3AED', stroke: '#5B21B6', strokeWidth: 2, r: 4 }}
+                    activeDot={{ fill: '#8B5CF6', stroke: '#FFFFFF', strokeWidth: 2, r: 6 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -235,12 +235,12 @@ const AnalyticsCharts = ({ logs = [] }) => {
           </div>
 
           {/* Chart 2: Work Hours vs Screen Time Bar Chart */}
-          <div className="bg-gray-800 p-4 sm:p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
             <div className="mb-4 sm:mb-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-200 flex items-center gap-2">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
                 <span>⚖️</span> Work Hours vs Screen Time
               </h3>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-gray-600 mt-1">
                 Compare active work duration against total digital screen exposure
               </p>
             </div>
@@ -248,37 +248,37 @@ const AnalyticsCharts = ({ logs = [] }) => {
             <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 10 }}>
-                  <CartesianGrid stroke="#374151" strokeDasharray="3 3" vertical={false} />
+                  <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="date"
-                    stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                    tickLine={{ stroke: '#4B5563' }}
+                    stroke="#6B7280"
+                    tick={{ fill: '#374151', fontSize: 10 }}
+                    tickLine={{ stroke: '#D1D5DB' }}
                     dy={6}
                   />
                   <YAxis
-                    stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                    tickLine={{ stroke: '#4B5563' }}
+                    stroke="#6B7280"
+                    tick={{ fill: '#374151', fontSize: 10 }}
+                    tickLine={{ stroke: '#D1D5DB' }}
                     unit="h"
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend
                     verticalAlign="top"
                     align="right"
-                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#9CA3AF' }}
+                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#374151' }}
                   />
                   <Bar
                     dataKey="Work Hours"
                     unit=" hrs"
-                    fill="#3B82F6"
+                    fill="#2563EB"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={32}
                   />
                   <Bar
                     dataKey="Screen Time"
                     unit=" hrs"
-                    fill="#8B5CF6"
+                    fill="#9333EA"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={32}
                   />

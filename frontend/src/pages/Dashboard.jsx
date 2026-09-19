@@ -154,16 +154,18 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-3 sm:p-6">
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-3 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 max-w-6xl mx-auto">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-blue-500">LifeFlow Dashboard</h1>
-          <p className="text-xs sm:text-sm text-gray-400">Intelligent Routine & Productivity Optimization</p>
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            LifeFlow Dashboard
+          </h1>
+          <p className="text-xs sm:text-sm text-gray-600">Intelligent Routine & Productivity Optimization</p>
         </div>
         <button
           onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition shadow text-sm self-end sm:self-auto"
+          className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-lg font-medium transition shadow-sm text-sm self-end sm:self-auto"
         >
           Logout
         </button>
@@ -174,13 +176,13 @@ const Dashboard = () => {
 
       {/* Navigation Tabs (Horizontal Scroll on Mobile) */}
       <div className="max-w-6xl mx-auto mb-6 sm:mb-8">
-        <div className="flex overflow-x-auto whitespace-nowrap gap-2 p-1.5 bg-gray-800 rounded-xl border border-gray-700 shadow-md scrollbar-thin scrollbar-thumb-gray-700">
+        <div className="flex overflow-x-auto whitespace-nowrap gap-2 p-1.5 bg-white rounded-xl border border-gray-200 shadow-sm scrollbar-thin scrollbar-thumb-gray-200">
           <button
             onClick={() => setActiveTab('simulator')}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'simulator'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>🤖</span>
@@ -191,8 +193,8 @@ const Dashboard = () => {
             onClick={() => setActiveTab('log')}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'log'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>📝</span>
@@ -203,8 +205,8 @@ const Dashboard = () => {
             onClick={() => setActiveTab('history')}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'history'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>📊</span>
@@ -218,8 +220,8 @@ const Dashboard = () => {
             }}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'analytics'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>📈</span>
@@ -230,8 +232,8 @@ const Dashboard = () => {
             onClick={() => setActiveTab('leaderboard')}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'leaderboard'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>🏆</span>
@@ -242,8 +244,8 @@ const Dashboard = () => {
             onClick={() => setActiveTab('profile')}
             className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'profile'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
             <span>👤</span>
@@ -266,23 +268,23 @@ const Dashboard = () => {
             {activeTab === 'simulator' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: What-If Simulator Form */}
-                <div className="lg:col-span-2 bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
-                  <h2 className="text-xl font-semibold mb-4 text-gray-200">🤖 What-If Simulator</h2>
-                  <p className="text-sm text-gray-400 mb-6">
+                <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                  <h2 className="text-xl font-semibold mb-4 text-gray-900">🤖 What-If Simulator</h2>
+                  <p className="text-sm text-gray-600 mb-6">
                     Tweak your daily metrics to see how it affects your predicted productivity.
                   </p>
 
                   <form onSubmit={handlePredict} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {inputFields.map((field) => (
                       <div key={field.name}>
-                        <label className="block text-xs font-medium text-gray-400 mb-1">{field.label}</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">{field.label}</label>
                         <input
                           type="number"
                           name={field.name}
                           step={field.step}
                           value={formData[field.name]}
                           onChange={handleChange}
-                          className="w-full rounded bg-gray-700 border border-gray-600 p-2 text-white focus:border-blue-500 focus:outline-none transition"
+                          className="w-full rounded-lg bg-white border border-gray-300 p-2 text-gray-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none transition"
                           required
                         />
                       </div>
@@ -292,36 +294,36 @@ const Dashboard = () => {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold transition disabled:opacity-50"
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg font-bold transition shadow-sm disabled:opacity-50"
                       >
                         {loading ? 'Running ML Models...' : 'Predict My Day'}
                       </button>
                     </div>
                   </form>
-                  {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
+                  {error && <p className="text-red-500 mt-4 text-center text-sm">{error}</p>}
                 </div>
 
                 {/* Right Column: Prediction Results */}
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-center">
-                  <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">🤖 ML Prediction Results</h2>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col justify-center">
+                  <h2 className="text-xl font-semibold mb-6 text-center text-gray-900">🤖 ML Prediction Results</h2>
 
                   {!result ? (
                     <div className="text-center text-gray-500 py-10">
-                      Adjust your lifestyle metrics and click <strong className="text-gray-400">"Predict My Day"</strong> to run our machine learning models.
+                      Adjust your lifestyle metrics and click <strong className="text-gray-700">"Predict My Day"</strong> to run our machine learning models.
                     </div>
                   ) : (
                     <div className="space-y-5">
                       {/* 1. Productivity Score */}
-                      <div className="bg-gray-750 p-4 rounded-xl text-center border-l-4 border-blue-500 shadow-sm">
-                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-400">Predicted Productivity</p>
+                      <div className="bg-purple-50/60 p-4 rounded-xl text-center border-l-4 border-purple-500 shadow-sm">
+                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-600">Predicted Productivity</p>
                         <div className="flex items-baseline justify-center gap-1 mt-1">
-                          <span className="text-4xl font-extrabold text-blue-400">
+                          <span className="text-4xl font-extrabold text-purple-600">
                             {result.productivity_score ?? result.predicted_productivity ?? 0}%
                           </span>
                         </div>
-                        <div className="w-full bg-gray-700 rounded-full h-1.5 mt-3">
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 mt-3">
                           <div
-                            className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
+                            className="bg-purple-600 h-1.5 rounded-full transition-all duration-500"
                             style={{ width: `${Math.min(100, Math.max(0, result.productivity_score ?? result.predicted_productivity ?? 0))}%` }}
                           />
                         </div>
@@ -329,23 +331,23 @@ const Dashboard = () => {
 
                       {/* 2. Burnout Risk */}
                       <div
-                        className={`bg-gray-750 p-4 rounded-xl text-center border-l-4 shadow-sm ${
+                        className={`p-4 rounded-xl text-center border-l-4 shadow-sm ${
                           String(result.burnout_risk).toLowerCase() === 'high'
-                            ? 'border-rose-500'
+                            ? 'bg-rose-50/60 border-rose-500'
                             : String(result.burnout_risk).toLowerCase() === 'medium'
-                            ? 'border-amber-500'
-                            : 'border-emerald-500'
+                            ? 'bg-amber-50/60 border-amber-500'
+                            : 'bg-emerald-50/60 border-emerald-500'
                         }`}
                       >
-                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-400">Burnout Risk</p>
+                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-600">Burnout Risk</p>
                         <div className="flex items-center justify-center gap-2 mt-1">
                           <span
                             className={`text-2xl font-black px-3.5 py-1 rounded-lg inline-flex items-center gap-1.5 ${
                               String(result.burnout_risk).toLowerCase() === 'high'
-                                ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                                ? 'bg-rose-100 text-rose-700 border border-rose-200'
                                 : String(result.burnout_risk).toLowerCase() === 'medium'
-                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                                : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                                : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
                             }`}
                           >
                             <span>
@@ -361,18 +363,18 @@ const Dashboard = () => {
 
                         {/* Fine-grained Burnout Probabilities breakdown */}
                         {result.burnout_probabilities && (
-                          <div className="mt-3 pt-3 border-t border-gray-700/60 grid grid-cols-3 gap-2 text-[11px] text-gray-400">
+                          <div className="mt-3 pt-3 border-t border-gray-200 grid grid-cols-3 gap-2 text-[11px] text-gray-600">
                             <div>
                               <span>Low: </span>
-                              <strong className="text-emerald-400">{result.burnout_probabilities.Low ?? 0}%</strong>
+                              <strong className="text-emerald-600">{result.burnout_probabilities.Low ?? 0}%</strong>
                             </div>
                             <div>
                               <span>Med: </span>
-                              <strong className="text-amber-400">{result.burnout_probabilities.Medium ?? 0}%</strong>
+                              <strong className="text-amber-600">{result.burnout_probabilities.Medium ?? 0}%</strong>
                             </div>
                             <div>
                               <span>High: </span>
-                              <strong className="text-rose-400">{result.burnout_probabilities.High ?? 0}%</strong>
+                              <strong className="text-rose-600">{result.burnout_probabilities.High ?? 0}%</strong>
                             </div>
                           </div>
                         )}
@@ -397,12 +399,12 @@ const Dashboard = () => {
             {activeTab === 'analytics' && (
               <div className="space-y-6">
                 {/* Header & Refresh */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-800 p-5 rounded-lg border border-gray-700 shadow-lg">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-200 flex items-center gap-2">
+                    <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                       <span>📈</span> Analytics & Insights
                     </h2>
-                    <p className="text-sm text-gray-400 mt-1">
+                    <p className="text-sm text-gray-600 mt-1">
                       Visualize your historical productivity trends and monitor lifestyle metrics.
                     </p>
                   </div>
@@ -410,7 +412,7 @@ const Dashboard = () => {
                   <button
                     onClick={fetchLogs}
                     disabled={logsLoading}
-                    className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded text-sm font-medium transition border border-gray-600 flex items-center gap-2 disabled:opacity-50"
+                    className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition border border-gray-300 shadow-sm flex items-center gap-2 disabled:opacity-50"
                   >
                     <svg
                       className={`w-4 h-4 ${logsLoading ? 'animate-spin' : ''}`}
@@ -431,11 +433,11 @@ const Dashboard = () => {
 
                 {/* Error Message */}
                 {logsError && (
-                  <div className="bg-red-900/30 border border-red-500/60 p-4 rounded-lg text-sm text-red-300 flex items-center justify-between">
+                  <div className="bg-red-50 border border-red-200 p-4 rounded-xl text-sm text-red-600 flex items-center justify-between">
                     <span>{logsError}</span>
                     <button
                       onClick={fetchLogs}
-                      className="bg-red-800 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-semibold"
                     >
                       Retry
                     </button>
@@ -444,9 +446,9 @@ const Dashboard = () => {
 
                 {/* Loading Indicator */}
                 {logsLoading && logs.length === 0 ? (
-                  <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center shadow-lg">
-                    <div className="inline-flex items-center justify-center p-4 bg-gray-750 rounded-full mb-4">
-                      <svg className="animate-spin h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24">
+                  <div className="bg-white rounded-xl border border-gray-200 p-12 text-center shadow-sm">
+                    <div className="inline-flex items-center justify-center p-4 bg-purple-50 rounded-full mb-4">
+                      <svg className="animate-spin h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path
                           className="opacity-75"
@@ -455,7 +457,7 @@ const Dashboard = () => {
                         />
                       </svg>
                     </div>
-                    <p className="text-gray-300 font-medium">Loading analytics...</p>
+                    <p className="text-gray-700 font-medium">Loading analytics...</p>
                   </div>
                 ) : (
                   <>
