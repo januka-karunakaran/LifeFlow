@@ -35,6 +35,37 @@ export const registerSchema = z.object({
     .regex(/[^A-Za-z0-9]/, { message: 'Password must contain at least one special character' }),
 });
 
+// Forgot Password Schema (Step 1)
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: 'Email address is required' })
+    .email({ message: 'Please enter a valid email address' }),
+});
+
+// Reset Password Schema (Step 2)
+export const resetPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: 'Email address is required' })
+    .email({ message: 'Please enter a valid email address' }),
+  otp: z
+    .string()
+    .trim()
+    .min(1, { message: 'Verification code is required' })
+    .length(6, { message: 'Verification code must be exactly 6 digits' }),
+  newPassword: z
+    .string()
+    .min(1, { message: 'New password is required' })
+    .min(8, { message: 'Password must be at least 8 characters long' })
+    .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
+    .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter' })
+    .regex(/[0-9]/, { message: 'Password must contain at least one number' })
+    .regex(/[^A-Za-z0-9]/, { message: 'Password must contain at least one special character' }),
+});
+
 // Daily Log Form Validation Schema
 export const dailyLogSchema = z.object({
   date: z

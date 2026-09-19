@@ -3,6 +3,8 @@ import {
   dailyLogSchema,
   loginSchema,
   registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
   validateForm,
 } from './validation';
 
@@ -205,6 +207,59 @@ describe('Zod Form Validation Schemas', () => {
       const result = validateForm(registerSchema, invalidRegister);
       expect(result.success).toBe(false);
       expect(result.error).toBe('Password must contain at least one special character');
+    });
+  });
+
+  describe('forgotPasswordSchema', () => {
+    it('should validate valid email for forgot password', () => {
+      const result = validateForm(forgotPasswordSchema, { email: 'user@example.com' });
+      expect(result.success).toBe(true);
+    });
+
+    it('should fail on empty email', () => {
+      const result = validateForm(forgotPasswordSchema, { email: '' });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Email address is required');
+    });
+
+    it('should fail on invalid email format', () => {
+      const result = validateForm(forgotPasswordSchema, { email: 'bad-email' });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Please enter a valid email address');
+    });
+  });
+
+  describe('resetPasswordSchema', () => {
+    it('should validate valid reset payload with strong password and 6-digit OTP', () => {
+      const validPayload = {
+        email: 'user@example.com',
+        otp: '123456',
+        newPassword: 'SecurePassword123!',
+      };
+      const result = validateForm(resetPasswordSchema, validPayload);
+      expect(result.success).toBe(true);
+    });
+
+    it('should fail on OTP with invalid length', () => {
+      const invalidPayload = {
+        email: 'user@example.com',
+        otp: '123',
+        newPassword: 'SecurePassword123!',
+      };
+      const result = validateForm(resetPasswordSchema, invalidPayload);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Verification code must be exactly 6 digits');
+    });
+
+    it('should fail on weak new password', () => {
+      const invalidPayload = {
+        email: 'user@example.com',
+        otp: '123456',
+        newPassword: 'weak',
+      };
+      const result = validateForm(resetPasswordSchema, invalidPayload);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Password must be at least 8 characters long');
     });
   });
 });
