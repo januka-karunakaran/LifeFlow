@@ -303,50 +303,79 @@ const Dashboard = () => {
 
                 {/* Right Column: Prediction Results */}
                 <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-center">
-                  <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">Prediction Results</h2>
+                  <h2 className="text-xl font-semibold mb-6 text-center text-gray-200">🤖 ML Prediction Results</h2>
 
                   {!result ? (
                     <div className="text-center text-gray-500 py-10">
-                      Run the simulator to see your results here.
+                      Adjust your lifestyle metrics and click <strong className="text-gray-400">"Predict My Day"</strong> to run our machine learning models.
                     </div>
                   ) : (
-                    <div className="space-y-6">
-                      {/* Productivity Score */}
-                      <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-blue-500">
-                        <p className="text-sm text-gray-400">Predicted Productivity</p>
-                        <p className="text-4xl font-bold text-blue-400 mt-1">{result.predicted_productivity}</p>
+                    <div className="space-y-5">
+                      {/* 1. Productivity Score */}
+                      <div className="bg-gray-750 p-4 rounded-xl text-center border-l-4 border-blue-500 shadow-sm">
+                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-400">Predicted Productivity</p>
+                        <div className="flex items-baseline justify-center gap-1 mt-1">
+                          <span className="text-4xl font-extrabold text-blue-400">
+                            {result.productivity_score ?? result.predicted_productivity ?? 0}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-1.5 mt-3">
+                          <div
+                            className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min(100, Math.max(0, result.productivity_score ?? result.predicted_productivity ?? 0))}%` }}
+                          />
+                        </div>
                       </div>
 
-                      {/* Task Completion */}
-                      <div className="bg-gray-700 p-4 rounded text-center border-l-4 border-green-500">
-                        <p className="text-sm text-gray-400">Task Completion Probability</p>
-                        <p className="text-4xl font-bold text-green-400 mt-1">
-                          {result.task_completion_probability}%
-                        </p>
-                      </div>
-
-                      {/* Disruption Risk */}
+                      {/* 2. Burnout Risk */}
                       <div
-                        className={`bg-gray-700 p-4 rounded text-center border-l-4 ${
-                          result.disruption_risk === 'HIGH'
-                            ? 'border-red-500'
-                            : result.disruption_risk === 'MEDIUM'
-                            ? 'border-yellow-500'
-                            : 'border-green-500'
+                        className={`bg-gray-750 p-4 rounded-xl text-center border-l-4 shadow-sm ${
+                          String(result.burnout_risk).toLowerCase() === 'high'
+                            ? 'border-rose-500'
+                            : String(result.burnout_risk).toLowerCase() === 'medium'
+                            ? 'border-amber-500'
+                            : 'border-emerald-500'
                         }`}
                       >
-                        <p className="text-sm text-gray-400">Routine Disruption Risk</p>
-                        <p
-                          className={`text-3xl font-bold mt-1 ${
-                            result.disruption_risk === 'HIGH'
-                              ? 'text-red-400'
-                              : result.disruption_risk === 'MEDIUM'
-                              ? 'text-yellow-400'
-                              : 'text-green-400'
-                          }`}
-                        >
-                          {result.disruption_risk}
-                        </p>
+                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-400">Burnout Risk</p>
+                        <div className="flex items-center justify-center gap-2 mt-1">
+                          <span
+                            className={`text-2xl font-black px-3.5 py-1 rounded-lg inline-flex items-center gap-1.5 ${
+                              String(result.burnout_risk).toLowerCase() === 'high'
+                                ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                                : String(result.burnout_risk).toLowerCase() === 'medium'
+                                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                                : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            }`}
+                          >
+                            <span>
+                              {String(result.burnout_risk).toLowerCase() === 'high'
+                                ? '⚠️'
+                                : String(result.burnout_risk).toLowerCase() === 'medium'
+                                ? '⚡'
+                                : '🛡️'}
+                            </span>
+                            <span>{result.burnout_risk}</span>
+                          </span>
+                        </div>
+
+                        {/* Fine-grained Burnout Probabilities breakdown */}
+                        {result.burnout_probabilities && (
+                          <div className="mt-3 pt-3 border-t border-gray-700/60 grid grid-cols-3 gap-2 text-[11px] text-gray-400">
+                            <div>
+                              <span>Low: </span>
+                              <strong className="text-emerald-400">{result.burnout_probabilities.Low ?? 0}%</strong>
+                            </div>
+                            <div>
+                              <span>Med: </span>
+                              <strong className="text-amber-400">{result.burnout_probabilities.Medium ?? 0}%</strong>
+                            </div>
+                            <div>
+                              <span>High: </span>
+                              <strong className="text-rose-400">{result.burnout_probabilities.High ?? 0}%</strong>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
