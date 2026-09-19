@@ -121,8 +121,9 @@ const Dashboard = () => {
 
     try {
       const token = localStorage.getItem('token');
-      // Sending data to Node.js which in turn calls Python FastAPI
-      const response = await axios.post(`${import.meta.env.VITE_ML_API_URL}/api/predictions`, formData, {
+      // Sending data to Node.js backend which in turn proxies to Python FastAPI ML service
+      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const response = await axios.post(`${baseUrl}/api/predictions`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
