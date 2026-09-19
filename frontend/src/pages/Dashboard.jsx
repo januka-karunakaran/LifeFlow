@@ -154,13 +154,16 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen bg-gray-900 text-white p-3 sm:p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-blue-500">LifeFlow Dashboard</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 max-w-6xl mx-auto">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-blue-500">LifeFlow Dashboard</h1>
+          <p className="text-xs sm:text-sm text-gray-400">Intelligent Routine & Productivity Optimization</p>
+        </div>
         <button
           onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition shadow"
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition shadow text-sm self-end sm:self-auto"
         >
           Logout
         </button>
@@ -169,12 +172,12 @@ const Dashboard = () => {
       {/* Gamification Panel (Streak & Achievements) */}
       <GamificationPanel logs={logs} />
 
-      {/* Navigation Tabs */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <div className="flex flex-wrap gap-2 p-1.5 bg-gray-800 rounded-xl border border-gray-700 shadow-md">
+      {/* Navigation Tabs (Horizontal Scroll on Mobile) */}
+      <div className="max-w-6xl mx-auto mb-6 sm:mb-8">
+        <div className="flex overflow-x-auto whitespace-nowrap gap-2 p-1.5 bg-gray-800 rounded-xl border border-gray-700 shadow-md scrollbar-thin scrollbar-thumb-gray-700">
           <button
             onClick={() => setActiveTab('simulator')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'simulator'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
@@ -186,7 +189,7 @@ const Dashboard = () => {
 
           <button
             onClick={() => setActiveTab('log')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'log'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
@@ -198,7 +201,7 @@ const Dashboard = () => {
 
           <button
             onClick={() => setActiveTab('history')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'history'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
@@ -213,7 +216,7 @@ const Dashboard = () => {
               setActiveTab('analytics');
               fetchLogs();
             }}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'analytics'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
@@ -225,7 +228,7 @@ const Dashboard = () => {
 
           <button
             onClick={() => setActiveTab('leaderboard')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'leaderboard'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
@@ -237,7 +240,7 @@ const Dashboard = () => {
 
           <button
             onClick={() => setActiveTab('profile')}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+            className={`flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap shrink-0 ${
               activeTab === 'profile'
                 ? 'bg-blue-600 text-white shadow-md'
                 : 'text-gray-400 hover:text-white hover:bg-gray-700/60'

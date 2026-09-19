@@ -183,11 +183,11 @@ const AnalyticsCharts = ({ logs = [] }) => {
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Chart 1: Productivity Trend Line Chart */}
-          <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
+          <div className="bg-gray-800 p-4 sm:p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-200 flex items-center gap-2">
                 <span>📈</span> Productivity Trend
               </h3>
               <p className="text-xs text-gray-400 mt-1">
@@ -195,21 +195,21 @@ const AnalyticsCharts = ({ logs = [] }) => {
               </p>
             </div>
 
-            <div className="w-full h-80">
+            <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 10, right: 20, left: -10, bottom: 20 }}>
+                <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 10 }}>
                   <CartesianGrid stroke="#374151" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="date"
                     stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
                     tickLine={{ stroke: '#4B5563' }}
-                    dy={8}
+                    dy={6}
                   />
                   <YAxis
                     domain={[0, 100]}
                     stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
                     tickLine={{ stroke: '#4B5563' }}
                     unit="%"
                   />
@@ -217,7 +217,7 @@ const AnalyticsCharts = ({ logs = [] }) => {
                   <Legend
                     verticalAlign="top"
                     align="right"
-                    wrapperStyle={{ paddingBottom: '12px', fontSize: '12px', color: '#9CA3AF' }}
+                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#9CA3AF' }}
                   />
                   <Line
                     type="monotone"
@@ -235,9 +235,9 @@ const AnalyticsCharts = ({ logs = [] }) => {
           </div>
 
           {/* Chart 2: Work Hours vs Screen Time Bar Chart */}
-          <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
+          <div className="bg-gray-800 p-4 sm:p-6 rounded-xl border border-gray-700 shadow-lg flex flex-col justify-between">
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-200 flex items-center gap-2">
                 <span>⚖️</span> Work Hours vs Screen Time
               </h3>
               <p className="text-xs text-gray-400 mt-1">
@@ -245,20 +245,20 @@ const AnalyticsCharts = ({ logs = [] }) => {
               </p>
             </div>
 
-            <div className="w-full h-80">
+            <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData} margin={{ top: 10, right: 20, left: -10, bottom: 20 }}>
+                <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 10 }}>
                   <CartesianGrid stroke="#374151" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="date"
                     stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
                     tickLine={{ stroke: '#4B5563' }}
-                    dy={8}
+                    dy={6}
                   />
                   <YAxis
                     stroke="#9CA3AF"
-                    tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
                     tickLine={{ stroke: '#4B5563' }}
                     unit="h"
                   />
@@ -266,21 +266,21 @@ const AnalyticsCharts = ({ logs = [] }) => {
                   <Legend
                     verticalAlign="top"
                     align="right"
-                    wrapperStyle={{ paddingBottom: '12px', fontSize: '12px', color: '#9CA3AF' }}
+                    wrapperStyle={{ paddingBottom: '12px', fontSize: '11px', color: '#9CA3AF' }}
                   />
                   <Bar
                     dataKey="Work Hours"
                     unit=" hrs"
                     fill="#3B82F6"
                     radius={[4, 4, 0, 0]}
-                    maxBarSize={35}
+                    maxBarSize={32}
                   />
                   <Bar
                     dataKey="Screen Time"
                     unit=" hrs"
                     fill="#8B5CF6"
                     radius={[4, 4, 0, 0]}
-                    maxBarSize={35}
+                    maxBarSize={32}
                   />
                 </BarChart>
               </ResponsiveContainer>
