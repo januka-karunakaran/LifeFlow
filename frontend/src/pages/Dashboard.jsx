@@ -8,11 +8,12 @@ import AnalyticsCharts from '../components/AnalyticsCharts';
 import GamificationPanel from '../components/GamificationPanel';
 import AiInsights from '../components/AiInsights';
 import UserProfile from '../components/UserProfile';
+import Leaderboard from '../components/Leaderboard';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator' | 'log' | 'history' | 'analytics'
+  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator' | 'log' | 'history' | 'analytics' | 'leaderboard' | 'profile'
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -223,6 +224,18 @@ const Dashboard = () => {
           </button>
 
           <button
+            onClick={() => setActiveTab('leaderboard')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
+              activeTab === 'leaderboard'
+                ? 'bg-blue-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700/60'
+            }`}
+          >
+            <span>🏆</span>
+            <span>Leaderboard</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('profile')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition ${
               activeTab === 'profile'
@@ -427,7 +440,10 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* Tab 5: User Profile */}
+            {/* Tab 5: Community Leaderboard */}
+            {activeTab === 'leaderboard' && <Leaderboard />}
+
+            {/* Tab 6: User Profile */}
             {activeTab === 'profile' && <UserProfile />}
           </motion.div>
         </AnimatePresence>
