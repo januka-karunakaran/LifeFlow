@@ -1,12 +1,13 @@
 const express = require('express');
-const { registerUser, loginUser, getMe } = require('../controllers/authController');
-const { protect } = require('../middleware/authMiddleware'); // Middleware Import
+const { registerUser, verifyOTP, resendOTP, loginUser, getMe } = require('../controllers/authController');
+const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
+router.post('/verify-otp', verifyOTP);
+router.post('/resend-otp', resendOTP);
 router.post('/login', loginUser);
-
 
 router.get('/me', protect, getMe);
 
