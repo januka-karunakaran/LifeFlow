@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { loginSchema, validateForm } from '../utils/validation';
 
@@ -69,7 +69,12 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300">Password</label>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-300">Password</label>
+              <Link to="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
             <input
               type="password"
               required

@@ -214,21 +214,125 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get current logged in user
+// @desc    Initiate forgot password request and send OTP
+// @route   POST /api/auth/forgot-password
+// @access  Public
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email address is required' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: 'No account found with this email address' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
+
+    user.resetPasswordOtp = otp;
+    user.resetPasswordExpires = resetPasswordExpires;
+    await user.save();
+
+    // Send OTP via email
+    await sendEmail({
+      to: normalizedEmail,
+      subject: 'LifeFlow Password Reset Code',
+      text: `Your 6-digit password reset code is: ${otp}. It will expire in 15 minutes.`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; background-color: #111827; color: #ffffff; border-radius: 12px; border: 1px solid #374151;">
+          <h2 style="color: #3b82f6; margin-top: 0; font-size: 22px;">Reset Your Password 🔒</h2>
+          <p style="color: #9ca3af; font-size: 14px; line-height: 1.5;">
+            We received a request to reset your password for your LifeFlow account. Use the verification code below to set a new password:
+          </p>
+          <div style="text-align: center; margin: 24px 0;">
+            <span style="display: inline-block; font-size: 32px; font-weight: 800; letter-spacing: 8px; padding: 14px 28px; background-color: #1f2937; border: 1px solid #3b82f6; border-radius: 8px; color: #60a5fa;">
+              ${otp}
+            </span>
+          </div>
+          <p style="color: #9ca3af; font-size: 12px;">
+            This code will expire in <strong>15 minutes</strong>. If you did not request a password reset, you can safely ignore this email.
+          </p>
+        </div>
+      `,
+    });
+
+    res.json({
+      message: 'Password reset code sent to your email.',
+      email: normalizedEmail,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+};
+
+// @desc    Reset password using OTP
+// @route   POST /api/auth/reset-password
+// @access  Public
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: 'Email, verification code, and new password are required' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Account not found' });
+    }
+
+    // Check code match
+    if (!user.resetPasswordOtp || user.resetPasswordOtp !== String(otp).trim()) {
+      return res.status(400).json({ message: 'Invalid password reset code. Please check and try again.' });
+    }
+
+    // Check expiration
+    if (user.resetPasswordExpires && user.resetPasswordExpires < new Date()) {
+      return res.status(400).json({ message: 'Password reset code has expired. Please request a new code.' });
+    }
+
+    // Set new password (pre-save hook will hash it)
+    user.password = newPassword;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordExpires = undefined;
+    // Also mark as verified if previously unverified
+    user.isVerified = true;
+    user.otp = undefined;
+    user.otpExpires = undefined;
+
+    await user.save();
+
+    res.json({
+      message: 'Password has been successfully reset! You can now sign in with your new password.',
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Server error' });
+  }
+};
+
+// @desc    Get current user profile
 // @route   GET /api/auth/me
 // @access  Private
 const getMe = async (req, res) => {
   try {
-    // req.user comes from the protect middleware
-    const user = {
-      _id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-    };
-    res.json(user);
+    const user = await User.findById(req.user._id).select('-password -otp -otpExpires -resetPasswordOtp -resetPasswordExpires');
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { registerUser, verifyOTP, resendOTP, loginUser, getMe };
+module.exports = { registerUser, verifyOTP, resendOTP, loginUser, getMe, forgotPassword, resetPassword };
