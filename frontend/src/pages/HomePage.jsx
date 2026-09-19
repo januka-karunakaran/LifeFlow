@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /* ─── Tiny SVG Icons ─────────────────────────────────────────────── */
 const Icon = {
