@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const DailyLogForm = ({ onLogAdded }) => {
   const getTodayDateString = () => new Date().toISOString().split('T')[0];
@@ -23,8 +24,6 @@ const DailyLogForm = ({ onLogAdded }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -37,13 +36,11 @@ const DailyLogForm = ({ onLogAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
 
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        setError('Authentication token missing. Please log in again.');
+        toast.error('Authentication token missing. Please log in again.');
         return;
       }
 
@@ -82,17 +79,13 @@ const DailyLogForm = ({ onLogAdded }) => {
         },
       });
 
-      setSuccess(`Daily log for ${payload.date} saved successfully!`);
+      toast.success('Log saved successfully!');
       if (onLogAdded) {
         onLogAdded(response.data);
       }
     } catch (err) {
-      const serverMessage = err.response?.data?.message;
-      if (serverMessage) {
-        setError(serverMessage);
-      } else {
-        setError('Failed to save daily log. Please check your backend connection.');
-      }
+      const serverMessage = err.response?.data?.message || 'Failed to save daily log. Please check your connection.';
+      toast.error(serverMessage);
     } finally {
       setLoading(false);
     }
@@ -131,35 +124,6 @@ const DailyLogForm = ({ onLogAdded }) => {
           </p>
         </div>
       </div>
-
-      {error && (
-        <div className="mb-5 rounded bg-red-900/30 border border-red-500/60 p-3 text-sm text-red-300 flex items-center justify-between">
-          <span>{error}</span>
-          <button
-            type="button"
-            onClick={() => setError('')}
-            className="text-red-400 hover:text-red-200 text-xs font-bold ml-3"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
-      {success && (
-        <div className="mb-5 rounded bg-green-900/30 border border-green-500/60 p-3 text-sm text-green-300 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span>✓</span>
-            <span>{success}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setSuccess('')}
-            className="text-green-400 hover:text-green-200 text-xs font-bold ml-3"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {inputFields.map((field) => (

@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 const LogHistory = ({ onNavigateToLog }) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deletingId, setDeletingId] = useState(null);
-  const [actionNotice, setActionNotice] = useState(null);
 
   // Pagination & Filtering state
   const [page, setPage] = useState(1);
@@ -118,7 +118,6 @@ const LogHistory = ({ onNavigateToLog }) => {
     if (!isConfirmed) return;
 
     setDeletingId(id);
-    setActionNotice(null);
 
     try {
       const token = localStorage.getItem('token');
@@ -128,7 +127,7 @@ const LogHistory = ({ onNavigateToLog }) => {
         },
       });
 
-      setActionNotice({ type: 'success', text: `Log for ${date} successfully deleted.` });
+      toast.success('Log deleted');
       // If deleting the last item on a page > 1, step back one page
       if (logs.length === 1 && page > 1) {
         setPage((prev) => prev - 1);
@@ -137,10 +136,7 @@ const LogHistory = ({ onNavigateToLog }) => {
       }
     } catch (err) {
       const serverMessage = err.response?.data?.message;
-      setActionNotice({
-        type: 'error',
-        text: serverMessage || 'Failed to delete the log. Please try again.',
-      });
+      toast.error(serverMessage || 'Failed to delete log.');
     } finally {
       setDeletingId(null);
     }
@@ -345,26 +341,6 @@ const LogHistory = ({ onNavigateToLog }) => {
           </div>
         </div>
       </div>
-
-      {/* Action Notice / Banner */}
-      {actionNotice && (
-        <div
-          className={`p-3 rounded text-sm border flex items-center justify-between transition ${
-            actionNotice.type === 'success'
-              ? 'bg-green-900/30 border-green-500/60 text-green-300'
-              : 'bg-red-900/30 border-red-500/60 text-red-300'
-          }`}
-        >
-          <span>{actionNotice.text}</span>
-          <button
-            type="button"
-            onClick={() => setActionNotice(null)}
-            className="text-xs font-bold px-2 hover:opacity-80"
-          >
-            ✕
-          </button>
-        </div>
-      )}
 
       {/* Overview Stat Cards */}
       {!loading && !error && totalLogs > 0 && (
