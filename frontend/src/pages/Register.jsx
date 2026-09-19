@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { registerSchema, validateForm } from '../utils/validation';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -13,6 +14,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side Zod validation
+    const validation = validateForm(registerSchema, { name, email, password });
+    if (!validation.success) {
+      toast.error(validation.error);
+      return;
+    }
+
     setLoading(true);
 
     try {

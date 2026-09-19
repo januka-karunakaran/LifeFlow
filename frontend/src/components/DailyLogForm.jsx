@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { dailyLogSchema, validateForm } from '../utils/validation';
 
 const DailyLogForm = ({ onLogAdded }) => {
   const getTodayDateString = () => new Date().toISOString().split('T')[0];
@@ -35,6 +36,14 @@ const DailyLogForm = ({ onLogAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side Zod validation
+    const validation = validateForm(dailyLogSchema, formData);
+    if (!validation.success) {
+      toast.error(validation.error);
+      return;
+    }
+
     setLoading(true);
 
     try {
